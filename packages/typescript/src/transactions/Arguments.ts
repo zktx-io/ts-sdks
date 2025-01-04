@@ -1,7 +1,7 @@
 // Copyright (c) Mysten Labs, Inc.
 // SPDX-License-Identifier: Apache-2.0
 
-import { Argument } from './data/internal.js';
+import type { Argument } from './data/internal.js';
 import type { Inputs } from './Inputs.js';
 import { createObjectMethods } from './object.js';
 import { createPure } from './pure.js';

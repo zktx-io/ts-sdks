@@ -88,5 +88,5 @@ export function useAutoConnectWallet(): 'disabled' | 'idle' | 'attempted' {
 		return 'attempted';
 	}
 
-	return isError ? 'attempted' : data ?? 'idle';
+	return isError ? 'attempted' : (data ?? 'idle');
 }
