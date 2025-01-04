@@ -45,7 +45,7 @@
 	"homepage": "https://github.com/mystenlabs/sui#readme",
 	"devDependencies": {
 		"@mysten/build-scripts": "workspace:*",
-		"@types/node": "^20.14.10",
+		"@types/node": "^22.10.5",
 		"@types/react": "^18.3.3",
 		"@types/react-dom": "^18.3.0",
 		"@vitejs/plugin-react-swc": "^3.7.0",
