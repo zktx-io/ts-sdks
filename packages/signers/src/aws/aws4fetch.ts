@@ -427,7 +427,7 @@ async function hmac(key: string | BufferSource, string: string): Promise<ArrayBu
 async function hash(content: string | ArrayBufferLike): Promise<ArrayBuffer> {
 	return crypto.subtle.digest(
 		'SHA-256',
-		typeof content === 'string' ? encoder.encode(content) : content,
+		(typeof content === 'string' ? encoder.encode(content) : content) as ArrayBuffer,
 	);
 }
 

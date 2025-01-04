@@ -64,7 +64,7 @@
 		"@mysten/build-scripts": "workspace:*",
 		"@size-limit/preset-small-lib": "^11.1.4",
 		"size-limit": "^11.1.4",
-		"typescript": "^5.5.3",
+		"typescript": "^5.7.2",
 		"vitest": "^2.0.1"
 	},
 	"dependencies": {

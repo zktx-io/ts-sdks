@@ -319,7 +319,9 @@ export class Transaction {
 	/**
 	 * Add a new object input to the transaction.
 	 */
-	object = createObjectMethods(
+	object: ReturnType<
+		typeof createObjectMethods<{ $kind: 'Input'; Input: number; type?: 'object' }>
+	> = createObjectMethods(
 		(value: TransactionObjectInput): { $kind: 'Input'; Input: number; type?: 'object' } => {
 			if (typeof value === 'function') {
 				return this.object(value(this));

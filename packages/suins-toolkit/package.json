@@ -35,10 +35,10 @@
 		"lint:fix": "pnpm run eslint:fix && pnpm run prettier:fix"
 	},
 	"devDependencies": {
-		"@faker-js/faker": "^8.4.1",
+		"@faker-js/faker": "^9.3.0",
 		"@mysten/build-scripts": "workspace:*",
 		"ts-node": "^10.9.2",
-		"typescript": "^5.5.3",
+		"typescript": "^5.7.2",
 		"vitest": "^2.0.1"
 	},
 	"dependencies": {

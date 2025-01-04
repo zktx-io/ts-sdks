@@ -44,7 +44,7 @@ it('can serialize simplified programmable call struct', () => {
 	expect(result.function).toEqual(moveCall.function);
 	expect(result.module).toEqual(moveCall.module);
 	expect(normalizeSuiAddress(result.package)).toEqual(normalizeSuiAddress(moveCall.package));
-	expect(result.typeArguments[0]).toMatchObject(moveCall.typeArguments[0]);
+	expect(result.typeArguments[0]).toEqual(moveCall.typeArguments[0]);
 });
 
 function ref(): { objectId: string; version: string; digest: string } {

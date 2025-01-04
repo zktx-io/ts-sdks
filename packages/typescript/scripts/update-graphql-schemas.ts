@@ -6,13 +6,13 @@ import { readFile } from 'fs/promises';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
-const result = execSync(`git branch --remote --list "origin/releases/sui-graphql-rpc-v*"`)
+const result = execSync(`git ls-remote -h git@github.com:MystenLabs/sui.git`)
 	.toString()
 	.trim()
 	.split('\n')
 	.map((ref) => {
-		const branch = ref.trim().replace('origin/', '');
-		const match = branch.match(/^releases\/sui-graphql-rpc-v([\d.]+)-release$/);
+		const branch = ref.trim().split('refs/heads/')[1];
+		const match = branch?.match(/^releases\/sui-graphql-rpc-v([\d.]+)-release$/);
 
 		if (!match) {
 			return null;
@@ -94,7 +94,7 @@ async function addSchemaVersion(versionName: string, schema: string) {
             {
                 "name": "@0no-co/graphqlsp",
                 "schema": "./schema.graphql",
-                "tadaOutputLocation": "src/graphql/generated/${versionName}/tada-env.d.ts"
+                "tadaOutputLocation": "src/graphql/generated/${versionName}/tada-env.ts"
             }
         ]
     }
@@ -124,7 +124,7 @@ export type { FragmentOf, ResultOf, VariablesOf, TadaDocumentNode } from 'gql.ta
 export { readFragment, maskFragments } from 'gql.tada';
 
 export const graphql = initGraphQLTada<{
-	introspection: introspection;
+	introspection: typeof introspection;
 	scalars: CustomScalars;
 }>();
 `.trimStart(),

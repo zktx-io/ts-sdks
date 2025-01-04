@@ -6,6 +6,6 @@
 		"outDir": "dist/cjs",
 		"isolatedModules": true,
 		"rootDir": "src"
-	},
-	"references": [{ "path": "../wallet-standard" }, { "path": "../typescript" }]
+	}
+	// "references": [{ "path": "../wallet-standard" }, { "path": "../typescript" }]
 }

@@ -176,7 +176,7 @@ export default class Sui {
 			ins,
 			p1,
 			p2,
-			Buffer.concat([Buffer.from([HostToLedger.START])].concat(parameterList)),
+			Buffer.concat(([Buffer.from([HostToLedger.START])] as Buffer[]).concat(parameterList)),
 			data,
 		);
 	}
