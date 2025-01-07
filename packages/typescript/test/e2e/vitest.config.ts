@@ -14,6 +14,7 @@ export default defineConfig({
 		},
 		setupFiles: ['test/e2e/utils/setupEnv.ts'],
 		globalSetup: ['test/e2e/utils/globalSetup.ts'],
+		include: ['test/e2e/**/*.test.ts'],
 	},
 	resolve: {
 		alias: {

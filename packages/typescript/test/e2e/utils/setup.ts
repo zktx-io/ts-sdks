@@ -169,23 +169,24 @@ export async function publishPackage(packageName: string, toolbox?: TestToolbox)
 		toolbox = await setup();
 	}
 
-	// const tmpobj = tmp.dirSync({ unsafeCleanup: true });
+	const result = await execSuiTools([
+		'move',
+		'--client.config',
+		toolbox.configPath,
+		'build',
+		'--dump-bytecode-as-base64',
+		'--path',
+		`/test-data/${packageName}`,
+		// '--install-dir',
+		// tmpobj.name,
+	]);
 
-	const { modules, dependencies } = JSON.parse(
-		(
-			await execSuiTools([
-				'move',
-				'--client.config',
-				toolbox.configPath,
-				'build',
-				'--dump-bytecode-as-base64',
-				'--path',
-				`/test-data/${packageName}`,
-				// '--install-dir',
-				// tmpobj.name,
-			])
-		).stdout,
-	);
+	if (!result.stdout.includes('{')) {
+		console.error(result.stdout);
+		throw new Error('Failed to publish package');
+	}
+
+	const { modules, dependencies } = JSON.parse(result.stdout.slice(result.stdout.indexOf('{')));
 
 	const tx = new Transaction();
 	const cap = tx.publish({
@@ -227,20 +228,23 @@ export async function upgradePackage(
 	if (!toolbox) {
 		toolbox = await setup();
 	}
+	const { stdout } = await execSuiTools([
+		'move',
+		'--client.config',
+		toolbox.configPath,
+		'build',
+		'--dump-bytecode-as-base64',
+		'--path',
+		`/test-data/${packageName}`,
+	]);
 
-	const { modules, dependencies, digest } = JSON.parse(
-		(
-			await execSuiTools([
-				'move',
-				'--client.config',
-				toolbox.configPath,
-				'build',
-				'--dump-bytecode-as-base64',
-				'--path',
-				`/test-data/${packageName}`,
-			])
-		).stdout,
-	);
+	if (!stdout.includes('{')) {
+		console.log(stdout);
+
+		throw new Error('Failed to upgrade package');
+	}
+
+	const { modules, dependencies, digest } = JSON.parse(stdout.slice(stdout.indexOf('{')));
 
 	const tx = new Transaction();
 
@@ -353,6 +357,10 @@ export async function execSuiTools(
 	const container = client.container.getById(SUI_TOOLS_CONTAINER_ID);
 
 	const result = await client.container.exec(container, ['sui', ...command], options);
+
+	if (result.stderr) {
+		console.log(result.stderr);
+	}
 
 	return result;
 }
