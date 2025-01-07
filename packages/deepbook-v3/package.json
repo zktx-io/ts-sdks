@@ -41,7 +41,7 @@
 	"devDependencies": {
 		"@iarna/toml": "^2.2.5",
 		"@mysten/build-scripts": "workspace:*",
-		"@types/node": "^20.14.10",
+		"@types/node": "^22.10.5",
 		"tmp": "^0.2.3",
 		"ts-node": "^10.9.2",
 		"ts-retry-promise": "^0.8.1",

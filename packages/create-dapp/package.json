@@ -41,7 +41,7 @@
 	"dependencies": {
 		"@mysten/dapp-kit": "workspace:*",
 		"@mysten/sui": "workspace:*",
-		"@types/node": "^20.14.10",
+		"@types/node": "^22.10.5",
 		"enquirer": "^2.4.1"
 	},
 	"sideEffects": false,

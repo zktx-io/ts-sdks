@@ -18,10 +18,10 @@ import {
 } from '../../../src/keypairs/passkey/publickey';
 import { fromBase64 } from '../../../src/utils';
 
-function compressedPubKeyToDerSPKI(compressedPubKey: Uint8Array): Uint8Array {
+function compressedPubKeyToDerSPKI(compressedPubKey: Uint8Array): ArrayBuffer {
 	// Combine header with the uncompressed public key coordinates.
 	const uncompressedPubKey = secp256r1.ProjectivePoint.fromHex(compressedPubKey).toRawBytes(false);
-	return new Uint8Array([...SECP256R1_SPKI_HEADER, ...uncompressedPubKey]);
+	return new Uint8Array([...SECP256R1_SPKI_HEADER, ...uncompressedPubKey]).buffer;
 }
 
 class MockPasskeySigner implements PasskeyProvider {
@@ -59,7 +59,7 @@ class MockPasskeySigner implements PasskeyProvider {
 	async create(): Promise<RegistrationCredential> {
 		const pk = this.pk;
 		const credentialResponse: AuthenticatorAttestationResponse = {
-			attestationObject: new Uint8Array(),
+			attestationObject: new ArrayBuffer(0),
 			clientDataJSON: new TextEncoder().encode(
 				JSON.stringify({
 					type: 'webauthn.create',
@@ -67,7 +67,7 @@ class MockPasskeySigner implements PasskeyProvider {
 					origin: 'https://www.sui.io',
 					crossOrigin: false,
 				}),
-			),
+			).buffer as ArrayBuffer,
 			getPublicKey: () =>
 				pk
 					? compressedPubKeyToDerSPKI(pk)
@@ -77,19 +77,20 @@ class MockPasskeySigner implements PasskeyProvider {
 							64, 72, 105, 218, 94, 85, 28, 244, 5, 19, 172, 167, 65, 137, 42, 193, 31, 97, 55, 49,
 							168, 234, 185, 163, 251, 162, 235, 213, 185, 116, 178, 194, 7, 128, 238, 255, 59, 121,
 							255, 175, 188, 137, 89, 147, 168, 103, 128, 97, 52,
-						]),
+						]).buffer,
 			getPublicKeyAlgorithm: () => -7,
 			getTransports: () => ['usb', 'ble', 'nfc'],
-			getAuthenticatorData: () => this.authenticatorData,
+			getAuthenticatorData: () => this.authenticatorData.buffer as ArrayBuffer,
 		};
 
 		const credential: PublicKeyCredential = {
 			id: 'mock-credential-id',
-			rawId: new Uint8Array([1, 2, 3]),
+			rawId: new Uint8Array([1, 2, 3]).buffer as ArrayBuffer,
 			response: credentialResponse,
 			type: 'public-key',
 			authenticatorAttachment: 'cross-platform',
 			getClientExtensionResults: () => ({}),
+			toJSON: () => ({}),
 		};
 
 		return credential as RegistrationCredential;
@@ -128,20 +129,21 @@ class MockPasskeySigner implements PasskeyProvider {
 
 		const authResponse: AuthenticatorAssertionResponse = {
 			authenticatorData: this.changeAuthenticatorData
-				? new Uint8Array([1]) // Change authenticator data
-				: this.authenticatorData,
-			clientDataJSON: new TextEncoder().encode(clientDataJSON),
-			signature: signature.toDERRawBytes(),
+				? (new Uint8Array([1]).buffer as ArrayBuffer) // Change authenticator data
+				: (this.authenticatorData.buffer as ArrayBuffer),
+			clientDataJSON: new TextEncoder().encode(clientDataJSON).buffer as ArrayBuffer,
+			signature: signature.toDERRawBytes().buffer as ArrayBuffer,
 			userHandle: null,
 		};
 
 		const credential: PublicKeyCredential = {
 			id: 'mock-credential-id',
-			rawId: new Uint8Array([1, 2, 3]),
+			rawId: new Uint8Array([1, 2, 3]).buffer as ArrayBuffer,
 			type: 'public-key',
 			response: authResponse,
 			authenticatorAttachment: 'cross-platform',
 			getClientExtensionResults: () => ({}),
+			toJSON: () => ({}),
 		};
 
 		return credential as AuthenticationCredential;
