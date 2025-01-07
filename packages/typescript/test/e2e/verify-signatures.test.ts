@@ -10,6 +10,8 @@ import { Secp256r1Keypair } from '../../src/keypairs/secp256r1';
 import { MultiSigPublicKey } from '../../src/multisig/publickey';
 import { verifyPersonalMessageSignature } from '../../src/verify';
 
+const DEFAULT_GRAPHQL_URL = import.meta.env.GRAPHQL_URL ?? 'http://127.0.0.1:9125';
+
 describe('Verify Signatures', () => {
 	// describe('transaction signatures', () => {});
 	describe('personal message signatures', () => {
@@ -170,7 +172,7 @@ describe('Verify Signatures', () => {
 		});
 
 		describe('zkLogin signatures', () => {
-			const client = new SuiGraphQLClient({ url: 'http://127.0.0.1:9125' });
+			const client = new SuiGraphQLClient({ url: DEFAULT_GRAPHQL_URL });
 			// this test assumes the localnet epoch is smaller than 3. it will fail if localnet has ran for too long and passed epoch 3.
 			// test case generated from `sui keytool zk-login-insecure-sign-personal-message --data "hello" --max-epoch 3`
 			const bytes = fromBase64('aGVsbG8='); // the base64 encoding of "hello"

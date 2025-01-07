@@ -1,7 +1,6 @@
 // Copyright (c) Mysten Labs, Inc.
 // SPDX-License-Identifier: Apache-2.0
 
-import { resolve } from 'path';
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 
 import { OwnedObjectRef, SuiClient } from '../../src/client';
@@ -27,7 +26,7 @@ describe('Transfer to Object', { retry: 3 }, () => {
 
 	beforeAll(async () => {
 		toolbox = await setup();
-		packageId = await toolbox.getPackage(resolve(__dirname, './data/tto'));
+		packageId = await toolbox.getPackage('tto');
 	});
 
 	beforeEach(async () => {

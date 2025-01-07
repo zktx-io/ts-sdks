@@ -26,8 +26,7 @@ describe('Transaction Builders', () => {
 	let sharedObjectId: string;
 
 	beforeAll(async () => {
-		const packagePath = __dirname + '/./data/serializer';
-		({ packageId, publishTxn } = await publishPackage(packagePath));
+		({ packageId, publishTxn } = await publishPackage('serializer'));
 		const sharedObject = publishTxn.effects?.created!.filter(
 			(o) =>
 				typeof o.owner === 'object' &&
@@ -160,8 +159,7 @@ describe('Transaction Builders', () => {
 		'Publish and Upgrade Package',
 		async () => {
 			// Step 1. Publish the package
-			const originalPackagePath = __dirname + '/./data/serializer';
-			const { packageId, publishTxn } = await publishPackage(originalPackagePath, toolbox);
+			const { packageId, publishTxn } = await publishPackage('serializer', toolbox);
 
 			const capId = (
 				publishTxn.objectChanges?.find(
@@ -196,12 +194,9 @@ describe('Transaction Builders', () => {
 			});
 			await validateTransaction(toolbox.client, toolbox.keypair, callOrigTx);
 
-			// Step 3. Publish the upgrade for the package.
-			const upgradedPackagePath = __dirname + '/./data/serializer_upgrade';
-
 			// Step 4. Make sure the behaviour of the upgrade package matches
 			// the newly introduced function
-			await upgradePackage(packageId, capId, upgradedPackagePath, toolbox);
+			await upgradePackage(packageId, capId, 'serializer_upgrade', toolbox);
 		},
 		{
 			// TODO: This test is currently flaky, so adding a retry to unblock merging

@@ -24,7 +24,7 @@ describe('Invoke any RPC endpoint', () => {
 	});
 
 	it('sui_getObjectOwnedByAddress Error', async () => {
-		expect(toolbox.client.call('suix_getOwnedObjects', [])).rejects.toThrowError();
+		await expect(toolbox.client.call('suix_getOwnedObjects', [])).rejects.toThrowError();
 	});
 
 	it('suix_getCommitteeInfo', async () => {

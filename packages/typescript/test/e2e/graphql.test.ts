@@ -5,6 +5,8 @@ import { describe, expect, it } from 'vitest';
 import { SuiGraphQLClient } from '../../src/graphql';
 import { graphql } from '../../src/graphql/schemas/latest';
 
+const DEFAULT_GRAPHQL_URL = import.meta.env.GRAPHQL_URL ?? 'http://127.0.0.1:9125';
+
 const queries = {
 	getFirstTransactionBlock: graphql(`
 		query getEpochs($limit: Int!) {
@@ -31,7 +33,7 @@ const queries = {
 };
 
 const client = new SuiGraphQLClient({
-	url: 'http://127.0.0.1:9125',
+	url: DEFAULT_GRAPHQL_URL,
 	queries,
 });
 
