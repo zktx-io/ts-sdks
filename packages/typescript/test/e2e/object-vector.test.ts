@@ -53,9 +53,8 @@ describe('Test Move call with a vector of objects as input', () => {
 
 	beforeEach(async () => {
 		toolbox = await setup();
-		const packagePath =
-			__dirname + '/../../../../crates/sui-core/src/unit_tests/data/entry_point_vector';
-		({ packageId } = await publishPackage(packagePath));
+
+		({ packageId } = await publishPackage('entry_point_vector'));
 	});
 
 	it('Test object vector', async () => {

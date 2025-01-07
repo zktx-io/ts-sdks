@@ -1,7 +1,6 @@
 // Copyright (c) Mysten Labs, Inc.
 // SPDX-License-Identifier: Apache-2.0
 
-import { resolve } from 'path';
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { OwnedObjectRef } from '../../src/client';
@@ -20,7 +19,7 @@ describe('CachingTransactionExecutor', { retry: 3 }, async () => {
 
 	beforeAll(async () => {
 		toolbox = await setup();
-		rawPackageId = packageId = await toolbox.getPackage(resolve(__dirname, './data/tto'));
+		rawPackageId = packageId = await toolbox.getPackage('tto');
 		packageId = normalizeSuiAddress(rawPackageId);
 	});
 

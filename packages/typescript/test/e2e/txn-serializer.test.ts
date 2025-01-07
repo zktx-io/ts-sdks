@@ -16,8 +16,7 @@ let publishTxn: SuiTransactionBlockResponse;
 let sharedObjectId: string;
 beforeAll(async () => {
 	toolbox = await setup();
-	const packagePath = __dirname + '/./data/serializer';
-	({ packageId, publishTxn } = await publishPackage(packagePath));
+	({ packageId, publishTxn } = await publishPackage('serializer'));
 	const sharedObject = publishTxn.effects?.created!.filter(
 		(o) =>
 			typeof o.owner === 'object' &&

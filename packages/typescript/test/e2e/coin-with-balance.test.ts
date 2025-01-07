@@ -1,7 +1,6 @@
 // Copyright (c) Mysten Labs, Inc.
 // SPDX-License-Identifier: Apache-2.0
 
-import { resolve } from 'path';
 import { fromHex, toBase64 } from '@mysten/bcs';
 import { beforeAll, describe, expect, it } from 'vitest';
 
@@ -21,8 +20,7 @@ describe('coinWithBalance', () => {
 
 	beforeAll(async () => {
 		[toolbox, publishToolbox] = await Promise.all([setup(), setup()]);
-		const packagePath = resolve(__dirname, './data/coin_metadata');
-		packageId = await publishToolbox.getPackage(packagePath);
+		packageId = await publishToolbox.getPackage('coin_metadata');
 		testType = normalizeSuiAddress(packageId) + '::test::TEST';
 		testTypeZero = normalizeSuiAddress(packageId) + '::test_zero::TEST_ZERO';
 	});

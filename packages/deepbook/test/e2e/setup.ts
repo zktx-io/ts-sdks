@@ -23,9 +23,9 @@ import { DeepBookClient } from '../../src/index.js';
 import type { PoolSummary } from '../../src/types/index.js';
 import { FLOAT_SCALING_FACTOR, NORMALIZED_SUI_COIN_TYPE } from '../../src/utils/index.js';
 
-const DEFAULT_FAUCET_URL = import.meta.env.VITE_FAUCET_URL ?? getFaucetHost('localnet');
-const DEFAULT_FULLNODE_URL = import.meta.env.VITE_FULLNODE_URL ?? getFullnodeUrl('localnet');
-const SUI_BIN = import.meta.env.VITE_SUI_BIN ?? 'cargo run --bin sui';
+const DEFAULT_FAUCET_URL = process.env.FAUCET_URL ?? getFaucetHost('localnet');
+const DEFAULT_FULLNODE_URL = process.env.FULLNODE_URL ?? getFullnodeUrl('localnet');
+const SUI_BIN = process.env.VITE_SUI_BIN ?? 'cargo run --bin sui';
 
 export const DEFAULT_TICK_SIZE = 1n * FLOAT_SCALING_FACTOR;
 export const DEFAULT_LOT_SIZE = 1n;
@@ -78,7 +78,7 @@ export async function setupSuiClient() {
 }
 
 // TODO: expose these testing utils from @mysten/sui
-export async function publishPackage(packagePath: string, toolbox?: TestToolbox) {
+export async function publishPackage(packageName: string, toolbox?: TestToolbox) {
 	// TODO: We create a unique publish address per publish, but we really could share one for all publishes.
 	if (!toolbox) {
 		toolbox = await setupSuiClient();
@@ -91,7 +91,7 @@ export async function publishPackage(packagePath: string, toolbox?: TestToolbox)
 
 	const { modules, dependencies } = JSON.parse(
 		execSync(
-			`${SUI_BIN} move move --client.config ${toolbox.configPath} build --dump-bytecode-as-base64 --path ${packagePath} --install-dir ${tmpobj.name}`,
+			`${SUI_BIN} move move --client.config ${toolbox.configPath} build --dump-bytecode-as-base64 --path /test-data/${packageName} --install-dir ${tmpobj.name}`,
 			{ encoding: 'utf-8' },
 		),
 	);
@@ -128,8 +128,7 @@ export async function publishPackage(packagePath: string, toolbox?: TestToolbox)
 }
 
 export async function setupPool(toolbox: TestToolbox): Promise<PoolSummary> {
-	const packagePath = __dirname + '/./data/test_coin';
-	const { packageId } = await publishPackage(packagePath, toolbox);
+	const { packageId } = await publishPackage('test_coin', toolbox);
 	const baseAsset = `${packageId}::test::TEST`;
 	const quoteAsset = NORMALIZED_SUI_COIN_TYPE;
 	const deepbook = new DeepBookClient(toolbox.client);
