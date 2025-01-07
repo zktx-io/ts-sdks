@@ -1,13 +1,11 @@
 // Copyright (c) Mysten Labs, Inc.
 // SPDX-License-Identifier: Apache-2.0
 
-import { execSync } from 'child_process';
-import { mkdtemp } from 'fs/promises';
-import { tmpdir } from 'os';
 import path from 'path';
-import tmp from 'tmp';
+import type { ContainerRuntimeClient } from 'testcontainers';
+import { getContainerRuntimeClient } from 'testcontainers';
 import { retry } from 'ts-retry-promise';
-import { expect } from 'vitest';
+import { expect, inject } from 'vitest';
 import { WebSocket } from 'ws';
 
 import type { SuiObjectChangePublished } from '../../../src/client/index.js';
@@ -22,11 +20,10 @@ import { Ed25519Keypair } from '../../../src/keypairs/ed25519/index.js';
 import { Transaction, UpgradePolicy } from '../../../src/transactions/index.js';
 import { SUI_TYPE_ARG } from '../../../src/utils/index.js';
 
-const DEFAULT_FAUCET_URL = import.meta.env.VITE_FAUCET_URL ?? getFaucetHost('localnet');
-const DEFAULT_FULLNODE_URL = import.meta.env.VITE_FULLNODE_URL ?? getFullnodeUrl('localnet');
+const DEFAULT_FAUCET_URL = import.meta.env.FAUCET_URL ?? getFaucetHost('localnet');
+const DEFAULT_FULLNODE_URL = import.meta.env.FULLNODE_URL ?? getFullnodeUrl('localnet');
 
-const SUI_BIN =
-	import.meta.env.VITE_SUI_BIN ?? path.resolve(__dirname, '../../../../../target/debug/sui');
+const SUI_TOOLS_CONTAINER_ID = inject('suiToolsContainerId');
 
 export const DEFAULT_RECIPIENT =
 	'0x0c567ffdf8162cb6d51af74be0199443b92e823d4ba6ced24de5c6c463797d46';
@@ -51,12 +48,12 @@ class TestPackageRegistry {
 		this.#packages = new Map();
 	}
 
-	async getPackage(path: string, toolbox?: TestToolbox) {
-		if (!this.#packages.has(path)) {
-			this.#packages.set(path, (await publishPackage(path, toolbox)).packageId);
+	async getPackage(name: string, toolbox?: TestToolbox) {
+		if (!this.#packages.has(name)) {
+			this.#packages.set(name, (await publishPackage(name, toolbox)).packageId);
 		}
 
-		return this.#packages.get(path)!;
+		return this.#packages.get(name)!;
 	}
 }
 
@@ -98,7 +95,7 @@ export class TestToolbox {
 	}
 
 	async mintNft(name: string = 'Test NFT') {
-		const packageId = await this.getPackage(path.resolve(__dirname, '../data/demo-bear'));
+		const packageId = await this.getPackage('demo-bear');
 		return (tx: Transaction) => {
 			return tx.moveCall({
 				target: `${packageId}::demo_bear::new`,
@@ -120,9 +117,11 @@ export function getClient(url = DEFAULT_FULLNODE_URL): SuiClient {
 export async function setup(options: { graphQLURL?: string; rpcURL?: string } = {}) {
 	const keypair = Ed25519Keypair.generate();
 	const address = keypair.getPublicKey().toSuiAddress();
-	const tmpDirPath = path.join(tmpdir(), 'config-');
-	const tmpDir = await mkdtemp(tmpDirPath);
-	const configPath = path.join(tmpDir, 'client.yaml');
+
+	const configPath = path.join(
+		'/test-data',
+		`${Math.random().toString(36).substring(2, 15)}-client.yaml`,
+	);
 	return setupWithFundedAddress(keypair, address, configPath, options);
 }
 
@@ -132,15 +131,18 @@ export async function setupWithFundedAddress(
 	configPath: string,
 	{ rpcURL }: { graphQLURL?: string; rpcURL?: string } = {},
 ) {
-	const client = getClient(rpcURL);
-	await retry(() => requestSuiFromFaucetV1({ host: DEFAULT_FAUCET_URL, recipient: address }), {
-		backoff: 'EXPONENTIAL',
-		// overall timeout in 60 seconds
-		timeout: 1000 * 60,
-		// skip retry if we hit the rate-limit error
-		retryIf: (error: any) => !(error instanceof FaucetRateLimitError),
-		logger: (msg) => console.warn('Retrying requesting from faucet: ' + msg),
-	});
+	const client = getClient(rpcURL ?? DEFAULT_FULLNODE_URL);
+	await retry(
+		async () => await requestSuiFromFaucetV1({ host: DEFAULT_FAUCET_URL, recipient: address }),
+		{
+			backoff: 'EXPONENTIAL',
+			// overall timeout in 60 seconds
+			timeout: 1000 * 60,
+			// skip retry if we hit the rate-limit error
+			retryIf: (error: any) => !(error instanceof FaucetRateLimitError),
+			logger: (msg) => console.warn('Retrying requesting from faucet: ' + msg),
+		},
+	);
 
 	await retry(
 		async () => {
@@ -157,27 +159,34 @@ export async function setupWithFundedAddress(
 		},
 	);
 
-	execSync(`${SUI_BIN} client --yes --client.config ${configPath}`, { encoding: 'utf-8' });
+	await execSuiTools(['client', '--yes', '--client.config', configPath]);
 	return new TestToolbox(keypair, rpcURL, configPath);
 }
 
-export async function publishPackage(packagePath: string, toolbox?: TestToolbox) {
+export async function publishPackage(packageName: string, toolbox?: TestToolbox) {
 	// TODO: We create a unique publish address per publish, but we really could share one for all publishes.
 	if (!toolbox) {
 		toolbox = await setup();
 	}
 
-	// remove all controlled temporary objects on process exit
-	tmp.setGracefulCleanup();
+	const result = await execSuiTools([
+		'move',
+		'--client.config',
+		toolbox.configPath,
+		'build',
+		'--dump-bytecode-as-base64',
+		'--path',
+		`/test-data/${packageName}`,
+		// '--install-dir',
+		// tmpobj.name,
+	]);
 
-	const tmpobj = tmp.dirSync({ unsafeCleanup: true });
+	if (!result.stdout.includes('{')) {
+		console.error(result.stdout);
+		throw new Error('Failed to publish package');
+	}
 
-	const { modules, dependencies } = JSON.parse(
-		execSync(
-			`${SUI_BIN} move --client.config ${toolbox.configPath} build --dump-bytecode-as-base64 --path ${packagePath} --install-dir ${tmpobj.name}`,
-			{ encoding: 'utf-8' },
-		),
-	);
+	const { modules, dependencies } = JSON.parse(result.stdout.slice(result.stdout.indexOf('{')));
 
 	const tx = new Transaction();
 	const cap = tx.publish({
@@ -206,33 +215,36 @@ export async function publishPackage(packagePath: string, toolbox?: TestToolbox)
 
 	expect(packageId).toBeTypeOf('string');
 
-	console.info(`Published package ${packageId} from address ${toolbox.address()}}`);
-
 	return { packageId, publishTxn };
 }
 
 export async function upgradePackage(
 	packageId: string,
 	capId: string,
-	packagePath: string,
+	packageName: string,
 	toolbox?: TestToolbox,
 ) {
 	// TODO: We create a unique publish address per publish, but we really could share one for all publishes.
 	if (!toolbox) {
 		toolbox = await setup();
 	}
+	const { stdout } = await execSuiTools([
+		'move',
+		'--client.config',
+		toolbox.configPath,
+		'build',
+		'--dump-bytecode-as-base64',
+		'--path',
+		`/test-data/${packageName}`,
+	]);
 
-	// remove all controlled temporary objects on process exit
-	tmp.setGracefulCleanup();
+	if (!stdout.includes('{')) {
+		console.log(stdout);
 
-	const tmpobj = tmp.dirSync({ unsafeCleanup: true });
+		throw new Error('Failed to upgrade package');
+	}
 
-	const { modules, dependencies, digest } = JSON.parse(
-		execSync(
-			`${SUI_BIN} move --client.config ${toolbox.configPath} build --dump-bytecode-as-base64 --path ${packagePath} --install-dir ${tmpobj.name}`,
-			{ encoding: 'utf-8' },
-		),
-	);
+	const { modules, dependencies, digest } = JSON.parse(stdout.slice(stdout.indexOf('{')));
 
 	const tx = new Transaction();
 
@@ -334,4 +346,21 @@ export async function executePaySuiNTimes(
 		txns.push(await paySui(client, signer, numRecipientsPerTxn, recipients, amounts));
 	}
 	return txns;
+}
+
+const client = await getContainerRuntimeClient();
+
+export async function execSuiTools(
+	command: string[],
+	options?: Parameters<ContainerRuntimeClient['container']['exec']>[2],
+) {
+	const container = client.container.getById(SUI_TOOLS_CONTAINER_ID);
+
+	const result = await client.container.exec(container, ['sui', ...command], options);
+
+	if (result.stderr) {
+		console.log(result.stderr);
+	}
+
+	return result;
 }

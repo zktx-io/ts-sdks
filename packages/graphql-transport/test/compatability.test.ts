@@ -13,7 +13,8 @@ import { Transaction } from '../../typescript/src/transactions/index.js';
 import { publishPackage, setup, TestToolbox } from '../../typescript/test/e2e/utils/setup';
 import { SuiClientGraphQLTransport } from '../src/transport';
 
-const DEFAULT_GRAPHQL_URL = import.meta.env.DEFAULT_GRAPHQL_URL ?? 'http:127.0.0.1:9125';
+const DEFAULT_GRAPHQL_URL = import.meta.env.GRAPHQL_URL ?? 'http://127.0.0.1:9125';
+const DEFAULT_FULLNODE_URL = import.meta.env.FULLNODE_URL ?? 'http://127.0.0.1:9000';
 
 describe('GraphQL SuiClient compatibility', () => {
 	let toolbox: TestToolbox;
@@ -28,7 +29,7 @@ describe('GraphQL SuiClient compatibility', () => {
 	});
 
 	beforeAll(async () => {
-		toolbox = await setup({ rpcURL: 'http:127.0.0.1:9124' });
+		toolbox = await setup({ rpcURL: DEFAULT_FULLNODE_URL });
 
 		const packagePath = __dirname + '/../../typescript/test/e2e/data/dynamic_fields';
 		({ packageId } = await publishPackage(packagePath, toolbox));

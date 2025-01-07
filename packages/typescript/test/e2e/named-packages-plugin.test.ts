@@ -7,11 +7,12 @@ import { SuiGraphQLClient } from '../../src/graphql/client';
 import { namedPackagesPlugin, Transaction } from '../../src/transactions';
 import { normalizeSuiAddress } from '../../src/utils';
 
+const DEFAULT_GRAPHQL_URL = import.meta.env.GRAPHQL_URL ?? 'http://127.0.0.1:9125';
 Transaction.registerGlobalSerializationPlugin(
 	'namedPackagesPlugin',
 	namedPackagesPlugin({
 		suiGraphQLClient: new SuiGraphQLClient({
-			url: 'http://127.0.0.1:9125',
+			url: DEFAULT_GRAPHQL_URL,
 		}),
 		overrides: {
 			packages: {

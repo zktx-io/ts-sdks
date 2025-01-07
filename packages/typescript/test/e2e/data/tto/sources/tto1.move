@@ -13,6 +13,7 @@ public struct B has key, store {
     id: UID,
 }
 
+#[allow(lint(self_transfer))]
 public fun start(ctx: &mut TxContext) {
     let a = A { id: object::new(ctx) };
     let a_address = object::id_address(&a);

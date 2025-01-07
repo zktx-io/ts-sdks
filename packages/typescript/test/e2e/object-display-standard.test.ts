@@ -1,7 +1,6 @@
 // Copyright (c) Mysten Labs, Inc.
 // SPDX-License-Identifier: Apache-2.0
 
-import { resolve } from 'path';
 import { beforeAll, describe, expect, it } from 'vitest';
 
 import { SuiObjectData } from '../../src/client';
@@ -13,7 +12,7 @@ describe('Test Object Display Standard', () => {
 
 	beforeAll(async () => {
 		toolbox = await setup();
-		packageId = await toolbox.getPackage(resolve(__dirname, './data/display_test'));
+		packageId = await toolbox.getPackage('display_test');
 	});
 
 	it('Test getting Display fields with error object', async () => {

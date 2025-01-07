@@ -76,7 +76,7 @@ export async function setupSuiClient() {
 }
 
 // TODO: expose these testing utils from @mysten/sui
-export async function publishPackage(packagePath: string, toolbox?: TestToolbox) {
+export async function publishPackage(packageName: string, toolbox?: TestToolbox) {
 	// TODO: We create a unique publish address per publish, but we really could share one for all publishes.
 	if (!toolbox) {
 		toolbox = await setupSuiClient();
@@ -89,7 +89,7 @@ export async function publishPackage(packagePath: string, toolbox?: TestToolbox)
 
 	const { modules, dependencies } = JSON.parse(
 		execSync(
-			`${SUI_BIN} move --client.config ${toolbox.configPath} build --dump-bytecode-as-base64 --path ${packagePath} --install-dir ${tmpobj.name}`,
+			`${SUI_BIN} move --client.config ${toolbox.configPath} build --dump-bytecode-as-base64 --path /test-data/${packageName} --install-dir ${tmpobj.name}`,
 			{ encoding: 'utf-8' },
 		),
 	);
