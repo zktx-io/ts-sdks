@@ -16,6 +16,11 @@ export default defineConfig({
 		globalSetup: ['test/e2e/globalSetup.ts'],
 	},
 	resolve: {
-		alias: {},
+		alias: {
+			'@mysten/bcs': new URL('../bcs/src', import.meta.url).pathname,
+			'@mysten/sui/transactions': new URL('../typescript/src/transactions', import.meta.url)
+				.pathname,
+			'@mysten/sui': new URL('../typescript/src', import.meta.url).pathname,
+		},
 	},
 });

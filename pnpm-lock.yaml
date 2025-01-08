@@ -113,7 +113,7 @@ importers:
         specifier: ^5.7.2
         version: 5.7.2
       vitest:
-        specifier: ^2.0.1
+        specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.5)(happy-dom@16.3.0)(jsdom@25.0.1)(msw@2.7.0(@types/node@22.10.5)(typescript@5.7.2))
 
   packages/build-scripts:
@@ -379,7 +379,7 @@ importers:
         specifier: ^6.0.7
         version: 6.0.7(@types/node@22.10.5)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.7.0)
       vitest:
-        specifier: ^2.0.1
+        specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.5)(happy-dom@16.3.0)(jsdom@25.0.1)(msw@2.7.0(@types/node@22.10.5)(typescript@5.7.2))
 
   packages/deepbook:
@@ -447,7 +447,7 @@ importers:
         specifier: ^6.0.7
         version: 6.0.7(@types/node@22.10.5)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.7.0)
       vitest:
-        specifier: ^2.0.1
+        specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.5)(happy-dom@16.3.0)(jsdom@25.0.1)(msw@2.7.0(@types/node@22.10.5)(typescript@5.7.2))
       wait-on:
         specifier: ^8.0.1
@@ -606,7 +606,7 @@ importers:
         specifier: ^5.7.2
         version: 5.7.2
       vitest:
-        specifier: ^2.0.1
+        specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.5)(happy-dom@16.3.0)(jsdom@25.0.1)(msw@2.7.0(@types/node@22.10.5)(typescript@5.7.2))
       wait-on:
         specifier: ^8.0.1
@@ -637,7 +637,7 @@ importers:
         specifier: ^6.0.7
         version: 6.0.7(@types/node@22.10.5)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.7.0)
       vitest:
-        specifier: ^2.0.1
+        specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.5)(happy-dom@16.3.0)(jsdom@25.0.1)(msw@2.7.0(@types/node@22.10.5)(typescript@5.7.2))
       wait-on:
         specifier: ^8.0.1
@@ -671,7 +671,7 @@ importers:
         specifier: ^5.7.2
         version: 5.7.2
       vitest:
-        specifier: ^2.0.1
+        specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.5)(happy-dom@16.3.0)(jsdom@25.0.1)(msw@2.7.0(@types/node@22.10.5)(typescript@5.7.2))
 
   packages/move-bytecode-template:
@@ -686,7 +686,7 @@ importers:
         specifier: ^5.7.2
         version: 5.7.2
       vitest:
-        specifier: ^2.0.1
+        specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.5)(happy-dom@16.3.0)(jsdom@25.0.1)(msw@2.7.0(@types/node@22.10.5)(typescript@5.7.2))
       wasm-pack:
         specifier: ^0.13.0
@@ -723,7 +723,7 @@ importers:
         specifier: ^5.7.2
         version: 5.7.2
       vitest:
-        specifier: ^2.0.1
+        specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.5)(happy-dom@16.3.0)(jsdom@25.0.1)(msw@2.7.0(@types/node@22.10.5)(typescript@5.7.2))
 
   packages/suins-toolkit:
@@ -745,7 +745,7 @@ importers:
         specifier: ^5.7.2
         version: 5.7.2
       vitest:
-        specifier: ^2.0.1
+        specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.5)(happy-dom@16.3.0)(jsdom@25.0.1)(msw@2.7.0(@types/node@22.10.5)(typescript@5.7.2))
 
   packages/typescript:
@@ -851,7 +851,7 @@ importers:
         specifier: ^5.1.4
         version: 5.1.4(typescript@5.7.2)(vite@6.0.7(@types/node@22.10.5)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.7.0))
       vitest:
-        specifier: ^2.0.1
+        specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.5)(happy-dom@16.3.0)(jsdom@25.0.1)(msw@2.7.0(@types/node@22.10.5)(typescript@5.7.2))
       wait-on:
         specifier: ^8.0.1
@@ -907,7 +907,7 @@ importers:
         specifier: ^5.7.2
         version: 5.7.2
       vitest:
-        specifier: ^2.0.1
+        specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.5)(happy-dom@16.3.0)(jsdom@25.0.1)(msw@2.7.0(@types/node@22.10.5)(typescript@5.7.2))
 
 packages:
@@ -937,7 +937,7 @@ packages:
     resolution: {integrity: sha512-9anThAaj1dQr6IGmzBMcfzOQKTa5artjuPmw8NYK/fiGEMjADbSguBY2FMDykt+QhilR3wc9VA/3yVju7JHg7Q==}
     hasBin: true
     peerDependencies:
-      graphql: ^16.8.1
+      graphql: '*'
 
   '@ardatan/sync-fetch@0.0.1':
     resolution: {integrity: sha512-xhlTqH0m31mnsG0tIP4ETgfSB6gXDaYYsUWTrlUV93fFQPI9dd8hE0Ot6MHLCtqgB32hwJAC3YZMWlXZw7AleA==}

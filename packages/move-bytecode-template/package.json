@@ -16,7 +16,7 @@
 		"@mysten/bcs": "workspace:*",
 		"@mysten/build-scripts": "workspace:*",
 		"typescript": "^5.7.2",
-		"vitest": "^2.0.1",
+		"vitest": "^2.1.8",
 		"wasm-pack": "^0.13.0"
 	}
 }

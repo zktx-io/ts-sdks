@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { resolve } from 'path';
-import { GenericContainer, Network } from 'testcontainers';
+import { GenericContainer, Network, PullPolicy } from 'testcontainers';
 import type { GlobalSetupContext } from 'vitest/node';
 
 declare module 'vitest' {
@@ -15,7 +15,10 @@ declare module 'vitest' {
 	}
 }
 
-const SUI_TOOLS_TAG = process.env.SUI_TOOLS_TAG || '2e256a70aa0ff81972ded6ebd57f7679e2ea194d-arm64';
+const SUI_TOOLS_TAG =
+	process.env.SUI_TOOLS_TAG || process.arch === 'arm64'
+		? '2e256a70aa0ff81972ded6ebd57f7679e2ea194d-arm64'
+		: '2e256a70aa0ff81972ded6ebd57f7679e2ea194d';
 
 export default async function setup({ provide }: GlobalSetupContext) {
 	console.log('Starting test containers');
@@ -31,6 +34,7 @@ export default async function setup({ provide }: GlobalSetupContext) {
 
 		.withExposedPorts(5432)
 		.withNetwork(network)
+		.withPullPolicy(PullPolicy.alwaysPull())
 		.start();
 
 	const localnet = await new GenericContainer(`mysten/sui-tools:${SUI_TOOLS_TAG}`)

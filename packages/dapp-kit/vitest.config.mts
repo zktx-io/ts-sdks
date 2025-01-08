@@ -4,11 +4,10 @@
 /// <reference types="vitest" />
 
 import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
-import { defineConfig } from 'vite';
-import { configDefaults } from 'vitest/config';
+import { configDefaults, defineConfig } from 'vitest/config';
 
 export default defineConfig({
-	plugins: [vanillaExtractPlugin()],
+	plugins: [vanillaExtractPlugin() as never],
 	test: {
 		exclude: [...configDefaults.exclude, 'tests/**'],
 		environment: 'happy-dom',
