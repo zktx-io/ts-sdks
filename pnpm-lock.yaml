@@ -410,7 +410,7 @@ importers:
         specifier: ^6.0.7
         version: 6.0.7(@types/node@22.10.5)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.7.0)
       vitest:
-        specifier: ^2.0.1
+        specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.5)(happy-dom@16.3.0)(jsdom@25.0.1)(msw@2.7.0(@types/node@22.10.5)(typescript@5.7.2))
       wait-on:
         specifier: ^8.0.1

@@ -52,7 +52,7 @@ export default async function setup({ provide }: GlobalSetupContext) {
 			'--with-graphql',
 		])
 		.withCopyDirectoriesToContainer([
-			{ source: resolve(__dirname, '../data'), target: '/test-data' },
+			{ source: resolve(__dirname, './data'), target: '/test-data' },
 		])
 		.withNetwork(network)
 		.withExposedPorts(9000, 9123, 9124, 9125)

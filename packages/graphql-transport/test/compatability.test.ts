@@ -4,7 +4,6 @@
 import { beforeAll, describe, expect, test } from 'vitest';
 
 import {
-	getFullnodeUrl,
 	SuiClient,
 	SuiObjectData,
 	SuiTransactionBlockResponse,
@@ -15,6 +14,7 @@ import { SuiClientGraphQLTransport } from '../src/transport';
 
 const DEFAULT_GRAPHQL_URL = import.meta.env.GRAPHQL_URL ?? 'http://127.0.0.1:9125';
 const DEFAULT_FULLNODE_URL = import.meta.env.FULLNODE_URL ?? 'http://127.0.0.1:9000';
+const DEFAULT_INDEXER_URL = import.meta.env.INDEXER_URL ?? 'http://127.0.0.1:9124';
 
 describe('GraphQL SuiClient compatibility', () => {
 	let toolbox: TestToolbox;
@@ -24,15 +24,14 @@ describe('GraphQL SuiClient compatibility', () => {
 	const graphQLClient = new SuiClient({
 		transport: new SuiClientGraphQLTransport({
 			url: DEFAULT_GRAPHQL_URL,
-			fallbackFullNodeUrl: getFullnodeUrl('localnet'),
+			fallbackFullNodeUrl: DEFAULT_FULLNODE_URL,
 		}),
 	});
 
 	beforeAll(async () => {
-		toolbox = await setup({ rpcURL: DEFAULT_FULLNODE_URL });
+		toolbox = await setup({ rpcURL: DEFAULT_INDEXER_URL });
 
-		const packagePath = __dirname + '/../../typescript/test/e2e/data/dynamic_fields';
-		({ packageId } = await publishPackage(packagePath, toolbox));
+		({ packageId } = await publishPackage('dynamic_fields', toolbox));
 
 		await toolbox.client
 			.getOwnedObjects({
@@ -286,7 +285,7 @@ describe('GraphQL SuiClient compatibility', () => {
 			data: [{ coinObjectId: id, version }],
 		} = await toolbox.getGasObjectsOwnedByAddress();
 		const fullNodeClient = new SuiClient({
-			url: getFullnodeUrl('localnet'),
+			url: DEFAULT_FULLNODE_URL,
 		});
 
 		const rpcObject = await fullNodeClient.tryGetPastObject({
@@ -497,14 +496,14 @@ describe('GraphQL SuiClient compatibility', () => {
 	test.skip('queryEvents', async () => {
 		const { nextCursor: _, ...rpc } = await toolbox.client.queryEvents({
 			query: {
-				Package: '0x3',
+				All: [],
 			},
 			limit: 1,
 		});
 
 		const { nextCursor: __, ...graphql } = await graphQLClient!.queryEvents({
 			query: {
-				Package: '0x3',
+				All: [],
 			},
 			limit: 1,
 		});

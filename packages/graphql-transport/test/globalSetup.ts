@@ -7,7 +7,8 @@ import type { GlobalSetupContext } from 'vitest/node';
 
 declare module 'vitest' {
 	export interface ProvidedContext {
-		localnetPort: number;
+		fullnodePort: number;
+		indexerPort: number;
 		graphqlPort: number;
 		faucetPort: number;
 		suiToolsContainerId: string;
@@ -52,7 +53,7 @@ export default async function setup({ provide }: GlobalSetupContext) {
 			'--with-graphql',
 		])
 		.withCopyDirectoriesToContainer([
-			{ source: resolve(__dirname, '../data'), target: '/test-data' },
+			{ source: resolve(__dirname, '../../typescript/test/e2e/data'), target: '/test-data' },
 		])
 		.withNetwork(network)
 		.withExposedPorts(9000, 9123, 9124, 9125)
@@ -64,7 +65,8 @@ export default async function setup({ provide }: GlobalSetupContext) {
 		.start();
 
 	provide('faucetPort', localnet.getMappedPort(9123));
-	provide('localnetPort', localnet.getMappedPort(9000));
+	provide('fullnodePort', localnet.getMappedPort(9000));
+	provide('indexerPort', localnet.getMappedPort(9124));
 	provide('graphqlPort', localnet.getMappedPort(9125));
 	provide('suiToolsContainerId', localnet.getId());
 }
