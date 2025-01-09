@@ -177,8 +177,6 @@ export async function publishPackage(packageName: string, toolbox?: TestToolbox)
 		'--dump-bytecode-as-base64',
 		'--path',
 		`/test-data/${packageName}`,
-		// '--install-dir',
-		// tmpobj.name,
 	]);
 
 	if (!result.stdout.includes('{')) {

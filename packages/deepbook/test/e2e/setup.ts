@@ -1,9 +1,6 @@
 // Copyright (c) Mysten Labs, Inc.
 // SPDX-License-Identifier: Apache-2.0
 
-import { execSync } from 'child_process';
-import { mkdtemp } from 'fs/promises';
-import { tmpdir } from 'os';
 import path from 'path';
 import type {
 	DevInspectResults,
@@ -15,9 +12,10 @@ import { getFullnodeUrl, SuiClient } from '@mysten/sui/client';
 import { FaucetRateLimitError, getFaucetHost, requestSuiFromFaucetV0 } from '@mysten/sui/faucet';
 import { Ed25519Keypair } from '@mysten/sui/keypairs/ed25519';
 import { Transaction } from '@mysten/sui/transactions';
-import tmp from 'tmp';
+import type { ContainerRuntimeClient } from 'testcontainers';
+import { getContainerRuntimeClient } from 'testcontainers';
 import { retry } from 'ts-retry-promise';
-import { expect } from 'vitest';
+import { expect, inject } from 'vitest';
 
 import { DeepBookClient } from '../../src/index.js';
 import type { PoolSummary } from '../../src/types/index.js';
@@ -25,7 +23,6 @@ import { FLOAT_SCALING_FACTOR, NORMALIZED_SUI_COIN_TYPE } from '../../src/utils/
 
 const DEFAULT_FAUCET_URL = process.env.FAUCET_URL ?? getFaucetHost('localnet');
 const DEFAULT_FULLNODE_URL = process.env.FULLNODE_URL ?? getFullnodeUrl('localnet');
-const SUI_BIN = process.env.VITE_SUI_BIN ?? 'cargo run --bin sui';
 
 export const DEFAULT_TICK_SIZE = 1n * FLOAT_SCALING_FACTOR;
 export const DEFAULT_LOT_SIZE = 1n;
@@ -70,31 +67,37 @@ export async function setupSuiClient() {
 		logger: (msg) => console.warn('Retrying requesting from faucet: ' + msg),
 	});
 
-	const tmpDirPath = path.join(tmpdir(), 'config-');
-	const tmpDir = await mkdtemp(tmpDirPath);
-	const configPath = path.join(tmpDir, 'client.yaml');
-	execSync(`${SUI_BIN} client --yes --client.config ${configPath}`, { encoding: 'utf-8' });
+	const configPath = path.join(
+		'/test-data',
+		`${Math.random().toString(36).substring(2, 15)}-client.yaml`,
+	);
+	await execSuiTools(['client', '--yes', '--client.config', configPath]);
 	return new TestToolbox(keypair, client, configPath);
 }
 
-// TODO: expose these testing utils from @mysten/sui
 export async function publishPackage(packageName: string, toolbox?: TestToolbox) {
 	// TODO: We create a unique publish address per publish, but we really could share one for all publishes.
 	if (!toolbox) {
 		toolbox = await setupSuiClient();
 	}
 
-	// remove all controlled temporary objects on process exit
-	tmp.setGracefulCleanup();
+	const result = await execSuiTools([
+		'move',
+		'--client.config',
+		toolbox.configPath,
+		'build',
+		'--dump-bytecode-as-base64',
+		'--path',
+		`/test-data/${packageName}`,
+	]);
 
-	const tmpobj = tmp.dirSync({ unsafeCleanup: true });
+	if (!result.stdout.includes('{')) {
+		console.error(result.stdout);
+		throw new Error('Failed to publish package');
+	}
 
-	const { modules, dependencies } = JSON.parse(
-		execSync(
-			`${SUI_BIN} move move --client.config ${toolbox.configPath} build --dump-bytecode-as-base64 --path /test-data/${packageName} --install-dir ${tmpobj.name}`,
-			{ encoding: 'utf-8' },
-		),
-	);
+	const { modules, dependencies } = JSON.parse(result.stdout.slice(result.stdout.indexOf('{')));
+
 	const tx = new Transaction();
 	const cap = tx.publish({
 		modules,
@@ -102,7 +105,7 @@ export async function publishPackage(packageName: string, toolbox?: TestToolbox)
 	});
 
 	// Transfer the upgrade capability to the sender so they can upgrade the package later if they want.
-	tx.transferObjects([cap], await toolbox.address());
+	tx.transferObjects([cap], toolbox.address());
 
 	const { digest } = await toolbox.client.signAndExecuteTransaction({
 		transaction: tx,
@@ -166,6 +169,9 @@ export async function executeTransaction(
 			showObjectChanges: true,
 		},
 	});
+	await toolbox.client.waitForTransaction({
+		digest: resp.digest,
+	});
 	expect(resp.effects?.status.status).toEqual('success');
 	return resp;
 }
@@ -178,4 +184,21 @@ export async function devInspectTransaction(
 		transactionBlock: tx,
 		sender: toolbox.address(),
 	});
+}
+
+export async function execSuiTools(
+	command: string[],
+	options?: Parameters<ContainerRuntimeClient['container']['exec']>[2],
+) {
+	const client = await getContainerRuntimeClient();
+	const SUI_TOOLS_CONTAINER_ID = inject('suiToolsContainerId');
+	const container = client.container.getById(SUI_TOOLS_CONTAINER_ID);
+
+	const result = await client.container.exec(container, ['sui', ...command], options);
+
+	if (result.stderr) {
+		console.log(result.stderr);
+	}
+
+	return result;
 }

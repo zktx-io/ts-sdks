@@ -50,7 +50,7 @@
 		"@types/node": "^22.10.5",
 		"dotenv": "^16.4.5",
 		"typescript": "^5.7.2",
-		"vitest": "^2.0.1"
+		"vitest": "^2.1.8"
 	},
 	"dependencies": {
 		"@google-cloud/kms": "^4.5.0",

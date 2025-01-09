@@ -3,7 +3,7 @@
 
 import { beforeAll, describe, expect, it } from 'vitest';
 
-import { DeepBookClient } from '../../src';
+import { DeepBookClient } from '../../src/index.js';
 import { Level2BookStatusPoint, PoolSummary } from '../../src/types';
 import {
 	DEFAULT_LOT_SIZE,
@@ -27,10 +27,12 @@ describe('Interacting with the pool', () => {
 
 	beforeAll(async () => {
 		toolbox = await setupSuiClient();
+		pool = await setupPool(toolbox);
+		accountCapId = await setupDeepbookAccount(toolbox);
+		accountCapId2 = await setupDeepbookAccount(toolbox);
 	});
 
 	it('test creating a pool', async () => {
-		pool = await setupPool(toolbox);
 		expect(pool.poolId).toBeDefined();
 		const deepbook = new DeepBookClient(toolbox.client);
 		const pools = await deepbook.getAllPools({});
@@ -38,9 +40,7 @@ describe('Interacting with the pool', () => {
 	});
 
 	it('test creating a custodian account', async () => {
-		accountCapId = await setupDeepbookAccount(toolbox);
 		expect(accountCapId).toBeDefined();
-		accountCapId2 = await setupDeepbookAccount(toolbox);
 		expect(accountCapId2).toBeDefined();
 	});
 

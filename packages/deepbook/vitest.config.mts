@@ -12,6 +12,8 @@ export default defineConfig({
 		env: {
 			NODE_ENV: 'test',
 		},
+		setupFiles: ['test/e2e/setupEnv.ts'],
+		globalSetup: ['test/e2e/globalSetup.ts'],
 	},
 	resolve: {
 		alias: {},

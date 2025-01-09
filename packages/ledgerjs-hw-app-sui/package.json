@@ -73,6 +73,6 @@
 		"@types/node": "^22.10.5",
 		"size-limit": "^11.1.4",
 		"typescript": "^5.7.2",
-		"vitest": "^2.0.1"
+		"vitest": "^2.1.8"
 	}
 }
