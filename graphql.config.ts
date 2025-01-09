@@ -11,7 +11,10 @@ const config: IGraphQLConfig = {
 				'./packages/graphql-transport/src/**/*.ts',
 				'./packages/graphql-transport/src/**/*.graphql',
 			],
-			include: ['./packages/graphql-transport/src/**/*.ts', './packages/graphql-transport/src/**/*.graphql'],
+			include: [
+				'./packages/graphql-transport/src/**/*.ts',
+				'./packages/graphql-transport/src/**/*.graphql',
+			],
 		},
 	},
 };

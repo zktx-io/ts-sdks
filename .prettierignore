@@ -18,4 +18,7 @@ generated/
 playwright-report/
 storybook-static/
 CHANGELOG.md
-
+packages/move-bytecode-template/pkg
+packages/docs/public/typedoc
+package.json
+pnpm-lock.yaml

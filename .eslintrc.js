@@ -35,6 +35,7 @@ module.exports = {
 		'storybook-static',
 		'.next',
 		'packages/docs/public/typedoc',
+		'packages/move-bytecode-template/pkg',
 	],
 	rules: {
 		'no-case-declarations': 'off',

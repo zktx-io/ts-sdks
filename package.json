@@ -4,7 +4,7 @@
 	"license": "Apache-2.0",
 	"scripts": {
 		"test": "turbo run test",
-		"test:dev": "turbo run test -- --run",
+		"test:e2e": "turbo run test:e2e --concurrency=1",
 		"icons": "pnpm --filter ./apps/icons",
 		"wallet": "turbo --filter ./apps/wallet",
 		"bcs": "turbo --filter ./packages/bcs",
@@ -15,7 +15,8 @@
 		"eslint:check": "eslint --max-warnings=0 .",
 		"eslint:fix": "pnpm run eslint:check --fix",
 		"lint": "pnpm run eslint:check && pnpm run prettier:check",
-		"lint:fix": "pnpm run eslint:fix && pnpm run prettier:fix"
+		"lint:fix": "pnpm run eslint:fix && pnpm run prettier:fix",
+		"build": "turbo run build"
 	},
 	"pnpm": {
 		"overrides": {
