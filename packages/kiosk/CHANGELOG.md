@@ -1,5 +1,13 @@
 # @mysten/kiosk
 
+## 0.10.1
+
+### Patch Changes
+
+- 7abd243: Update repo links
+- Updated dependencies [7abd243]
+  - @mysten/sui@1.18.1
+
 ## 0.10.0
 
 ### Minor Changes

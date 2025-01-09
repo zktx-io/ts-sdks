@@ -1,5 +1,13 @@
 # @mysten/signers
 
+## 0.1.4
+
+### Patch Changes
+
+- 7abd243: Update repo links
+- Updated dependencies [7abd243]
+  - @mysten/sui@1.18.1
+
 ## 0.1.3
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @mysten/suins-toolkit
 
+## 0.5.35
+
+### Patch Changes
+
+- 7abd243: Update repo links
+- Updated dependencies [7abd243]
+  - @mysten/sui@1.18.1
+
 ## 0.5.34
 
 ### Patch Changes

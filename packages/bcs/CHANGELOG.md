@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.2.1
+
+### Patch Changes
+
+- 7abd243: Update repo links
+
 ## 1.2.0
 
 ### Minor Changes
