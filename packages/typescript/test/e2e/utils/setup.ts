@@ -184,7 +184,15 @@ export async function publishPackage(packageName: string, toolbox?: TestToolbox)
 		throw new Error('Failed to publish package');
 	}
 
-	const { modules, dependencies } = JSON.parse(result.stdout.slice(result.stdout.indexOf('{')));
+	let resultJson;
+	try {
+		resultJson = JSON.parse(result.stdout.slice(result.stdout.indexOf('{')));
+	} catch (error) {
+		console.error(result.stdout);
+		throw new Error('Failed to publish package');
+	}
+
+	const { modules, dependencies } = resultJson;
 
 	const tx = new Transaction();
 	const cap = tx.publish({
