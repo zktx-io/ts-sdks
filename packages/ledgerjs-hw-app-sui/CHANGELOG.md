@@ -1,5 +1,11 @@
 # @mysten/ledgerjs-hw-app-sui
 
+## 0.4.2
+
+### Patch Changes
+
+- 7abd243: Update repo links
+
 ## 0.4.1
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @mysten/deepbook-v3
 
+## 0.12.23
+
+### Patch Changes
+
+- 7abd243: Update repo links
+- Updated dependencies [7abd243]
+  - @mysten/sui@1.18.1
+
 ## 0.12.22
 
 ### Patch Changes

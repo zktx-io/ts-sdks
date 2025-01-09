@@ -1,5 +1,13 @@
 # @mysten/enoki
 
+## 0.4.20
+
+### Patch Changes
+
+- 7abd243: Update repo links
+- Updated dependencies [7abd243]
+  - @mysten/sui@1.18.1
+
 ## 0.4.19
 
 ### Patch Changes
