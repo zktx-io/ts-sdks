@@ -34,12 +34,12 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/mystenlabs/sui.git"
+		"url": "git+https://github.com/mystenlabs/ts-sdks.git"
 	},
 	"bugs": {
-		"url": "https://github.com/mystenlabs/sui/issues"
+		"url": "https://github.com/mystenlabs/ts-sdks/issues"
 	},
-	"homepage": "https://github.com/mystenlabs/sui#readme",
+	"homepage": "https://github.com/mystenlabs/ts-sdks#readme",
 	"devDependencies": {
 		"@graphql-codegen/add": "^5.0.3",
 		"@graphql-codegen/cli": "^5.0.2",
