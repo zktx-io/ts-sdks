@@ -36,6 +36,7 @@ module.exports = {
 		'.next',
 		'packages/docs/public/typedoc',
 		'packages/move-bytecode-template/pkg',
+		'packages/walrus-wasm',
 	],
 	rules: {
 		'no-case-declarations': 'off',

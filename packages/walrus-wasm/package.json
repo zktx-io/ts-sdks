@@ -1,0 +1,15 @@
+{
+  "name": "@mysten/walrus-wasm",
+  "collaborators": [
+    "jonaslindstrom"
+  ],
+  "version": "0.0.0",
+  "private": true,
+  "files": [
+    "walrus_wasm_bg.wasm",
+    "walrus_wasm.js",
+    "walrus_wasm.d.ts"
+  ],
+  "main": "walrus_wasm.js",
+  "types": "walrus_wasm.d.ts"
+}

@@ -47,6 +47,7 @@
 	},
 	"dependencies": {
 		"@mysten/bcs": "workspace:*",
-		"@mysten/sui": "workspace:*"
+		"@mysten/sui": "workspace:*",
+		"@mysten/walrus-wasm": "workspace:*"
 	}
 }
