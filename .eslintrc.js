@@ -37,6 +37,7 @@ module.exports = {
 		'packages/docs/public/typedoc',
 		'packages/move-bytecode-template/pkg',
 		'packages/walrus-wasm',
+		'packages/walrus/src/client',
 	],
 	rules: {
 		'no-case-declarations': 'off',
