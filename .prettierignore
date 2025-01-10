@@ -20,5 +20,6 @@ storybook-static/
 CHANGELOG.md
 packages/move-bytecode-template/pkg
 packages/docs/public/typedoc
+packages/walrus-wasm
 package.json
 pnpm-lock.yaml

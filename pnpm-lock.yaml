@@ -887,6 +887,9 @@ importers:
       '@mysten/sui':
         specifier: workspace:*
         version: link:../typescript
+      '@mysten/walrus-wasm':
+        specifier: workspace:*
+        version: link:../walrus-wasm
     devDependencies:
       '@mysten/build-scripts':
         specifier: workspace:*
@@ -900,6 +903,8 @@ importers:
       vitest:
         specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.5)(happy-dom@16.3.0)(jsdom@25.0.1)(msw@2.7.0(@types/node@22.10.5)(typescript@5.7.2))
+
+  packages/walrus-wasm: {}
 
   packages/zksend:
     dependencies:
