@@ -186,7 +186,9 @@ export async function publishPackage(packageName: string, toolbox?: TestToolbox)
 
 	let resultJson;
 	try {
-		resultJson = JSON.parse(result.stdout.slice(result.stdout.indexOf('{')));
+		resultJson = JSON.parse(
+			result.stdout.slice(result.stdout.indexOf('{'), result.stdout.lastIndexOf('}') + 1),
+		);
 	} catch (error) {
 		console.error(result.stdout);
 		throw new Error('Failed to publish package');
