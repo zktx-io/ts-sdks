@@ -21,5 +21,6 @@ CHANGELOG.md
 packages/move-bytecode-template/pkg
 packages/docs/public/typedoc
 packages/walrus-wasm
+packages/walrus/src/client
 package.json
 pnpm-lock.yaml
