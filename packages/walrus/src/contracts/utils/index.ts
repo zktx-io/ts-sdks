@@ -3,8 +3,8 @@
 
 import type { BcsType, TypeTag } from '@mysten/sui/bcs';
 import { bcs, TypeTagSerializer } from '@mysten/sui/bcs';
-import type { TransactionArgument } from '@mysten/sui/transactions';
 import { isArgument } from '@mysten/sui/transactions';
+import type { TransactionArgument } from '@mysten/sui/transactions';
 import { normalizeSuiAddress } from '@mysten/sui/utils';
 
 const MOVE_STDLIB_ADDRESS = normalizeSuiAddress('0x1');
