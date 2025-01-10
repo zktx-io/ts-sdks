@@ -1,5 +1,13 @@
 # @mysten/enoki
 
+## 0.4.21
+
+### Patch Changes
+
+- Updated dependencies [c39f32f]
+- Updated dependencies [539168a]
+  - @mysten/sui@1.19.0
+
 ## 0.4.20
 
 ### Patch Changes

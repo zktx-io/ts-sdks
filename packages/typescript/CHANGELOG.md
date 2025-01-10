@@ -1,5 +1,15 @@
 # @mysten/sui.js
 
+## 1.19.0
+
+### Minor Changes
+
+- 539168a: expose isArgument util from @mysten/sui/transactions
+
+### Patch Changes
+
+- c39f32f: Reduce number of imports required when importing keypairs
+
 ## 1.18.1
 
 ### Patch Changes
