@@ -37,7 +37,7 @@ export function CertifiedInvalidBlobId() {
 		blob_id: bcs.u256(),
 	});
 }
-export function init(packageAddress: string) {
+export function init(packageAddresses: { walrus: string }) {
 	function new_proof_of_possession_msg(options: {
 		arguments: [
 			RawTransactionArgument<number>,
@@ -48,19 +48,17 @@ export function init(packageAddress: string) {
 		const argumentsTypes = ['u32', 'address', 'vector<u8>'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'messages',
 				function: 'new_proof_of_possession_msg',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function to_bcs(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::messages::ProofOfPossessionMessage',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::messages::ProofOfPossessionMessage`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'messages',
 				function: 'to_bcs',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -70,12 +68,12 @@ export function init(packageAddress: string) {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<number[]>];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::messages::ProofOfPossessionMessage',
+			`${packageAddresses.walrus}::messages::ProofOfPossessionMessage`,
 			'vector<u8>',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'messages',
 				function: 'verify_proof_of_possession',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -91,19 +89,17 @@ export function init(packageAddress: string) {
 		const argumentsTypes = ['vector<u8>', 'u32', 'u16'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'messages',
 				function: 'new_certified_message',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function certify_blob_message(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::messages::CertifiedMessage',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::messages::CertifiedMessage`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'messages',
 				function: 'certify_blob_message',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -115,139 +111,117 @@ export function init(packageAddress: string) {
 		const argumentsTypes = ['u32', 'u256'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'messages',
 				function: 'certified_event_blob_message',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function invalid_blob_id_message(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::messages::CertifiedMessage',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::messages::CertifiedMessage`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'messages',
 				function: 'invalid_blob_id_message',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function intent_type(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::messages::CertifiedMessage',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::messages::CertifiedMessage`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'messages',
 				function: 'intent_type',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function intent_version(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::messages::CertifiedMessage',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::messages::CertifiedMessage`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'messages',
 				function: 'intent_version',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function cert_epoch(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::messages::CertifiedMessage',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::messages::CertifiedMessage`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'messages',
 				function: 'cert_epoch',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function stake_support(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::messages::CertifiedMessage',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::messages::CertifiedMessage`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'messages',
 				function: 'stake_support',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function message(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::messages::CertifiedMessage',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::messages::CertifiedMessage`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'messages',
 				function: 'message',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function into_message(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::messages::CertifiedMessage',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::messages::CertifiedMessage`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'messages',
 				function: 'into_message',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function certified_epoch(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::messages::CertifiedBlobMessage',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::messages::CertifiedBlobMessage`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'messages',
 				function: 'certified_epoch',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function certified_blob_id(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::messages::CertifiedBlobMessage',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::messages::CertifiedBlobMessage`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'messages',
 				function: 'certified_blob_id',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function certified_invalid_epoch(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::messages::CertifiedInvalidBlobId',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::messages::CertifiedInvalidBlobId`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'messages',
 				function: 'certified_invalid_epoch',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function invalid_blob_id(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::messages::CertifiedInvalidBlobId',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::messages::CertifiedInvalidBlobId`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'messages',
 				function: 'invalid_blob_id',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),

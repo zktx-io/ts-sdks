@@ -5,7 +5,7 @@ import type { Transaction } from '@mysten/sui/transactions';
 import type { RawTransactionArgument } from '../utils/index.js';
 import { normalizeMoveArguments } from '../utils/index.js';
 
-export function init(packageAddress: string) {
+export function init(packageAddresses: { walrus: string }) {
 	function encoded_blob_length(options: {
 		arguments: [
 			RawTransactionArgument<number | bigint>,
@@ -16,7 +16,7 @@ export function init(packageAddress: string) {
 		const argumentsTypes = ['u64', 'u8', 'u16'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'encoding',
 				function: 'encoded_blob_length',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),

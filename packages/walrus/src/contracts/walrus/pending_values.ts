@@ -12,12 +12,12 @@ export function PendingValues() {
 		pos0: vec_map.VecMap(bcs.u32(), bcs.u64()),
 	});
 }
-export function init(packageAddress: string) {
+export function init(packageAddresses: { walrus: string }) {
 	function empty(options: { arguments: [] }) {
 		const argumentsTypes: [] = [];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'pending_values',
 				function: 'empty',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -31,13 +31,13 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::pending_values::PendingValues',
+			`${packageAddresses.walrus}::pending_values::PendingValues`,
 			'u32',
 			'u64',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'pending_values',
 				function: 'insert_or_add',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -51,13 +51,13 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::pending_values::PendingValues',
+			`${packageAddresses.walrus}::pending_values::PendingValues`,
 			'u32',
 			'u64',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'pending_values',
 				function: 'reduce',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -66,13 +66,10 @@ export function init(packageAddress: string) {
 	function value_at(options: {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<number>];
 	}) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::pending_values::PendingValues',
-			'u32',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::pending_values::PendingValues`, 'u32'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'pending_values',
 				function: 'value_at',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -81,37 +78,30 @@ export function init(packageAddress: string) {
 	function flush(options: {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<number>];
 	}) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::pending_values::PendingValues',
-			'u32',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::pending_values::PendingValues`, 'u32'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'pending_values',
 				function: 'flush',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function unwrap(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::pending_values::PendingValues',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::pending_values::PendingValues`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'pending_values',
 				function: 'unwrap',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function is_empty(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::pending_values::PendingValues',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::pending_values::PendingValues`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'pending_values',
 				function: 'is_empty',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),

@@ -12,7 +12,7 @@ export function Metadata() {
 		metadata: vec_map.VecMap(bcs.string(), bcs.string()),
 	});
 }
-export function init(packageAddress: string) {
+export function init(packageAddresses: { walrus: string }) {
 	function insert_or_update(options: {
 		arguments: [
 			RawTransactionArgument<string>,
@@ -21,13 +21,13 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::metadata::Metadata',
+			`${packageAddresses.walrus}::metadata::Metadata`,
 			'0000000000000000000000000000000000000000000000000000000000000001::string::String',
 			'0000000000000000000000000000000000000000000000000000000000000001::string::String',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'metadata',
 				function: 'insert_or_update',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -37,12 +37,12 @@ export function init(packageAddress: string) {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<string>];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::metadata::Metadata',
+			`${packageAddresses.walrus}::metadata::Metadata`,
 			'0000000000000000000000000000000000000000000000000000000000000001::string::String',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'metadata',
 				function: 'remove',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),

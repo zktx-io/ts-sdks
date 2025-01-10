@@ -5,14 +5,14 @@ import type { Transaction } from '@mysten/sui/transactions';
 import type { RawTransactionArgument } from '../utils/index.js';
 import { normalizeMoveArguments } from '../utils/index.js';
 
-export function init(packageAddress: string) {
+export function init(packageAddresses: { walrus: string }) {
 	function encoded_blob_length(options: {
 		arguments: [RawTransactionArgument<number | bigint>, RawTransactionArgument<number>];
 	}) {
 		const argumentsTypes = ['u64', 'u16'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'redstuff',
 				function: 'encoded_blob_length',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -22,7 +22,7 @@ export function init(packageAddress: string) {
 		const argumentsTypes = ['u16'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'redstuff',
 				function: 'source_symbols_primary',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -32,7 +32,7 @@ export function init(packageAddress: string) {
 		const argumentsTypes = ['u16'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'redstuff',
 				function: 'source_symbols_secondary',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -42,7 +42,7 @@ export function init(packageAddress: string) {
 		const argumentsTypes = ['u16'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'redstuff',
 				function: 'n_source_symbols',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -54,7 +54,7 @@ export function init(packageAddress: string) {
 		const argumentsTypes = ['u64', 'u16'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'redstuff',
 				function: 'symbol_size',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -64,7 +64,7 @@ export function init(packageAddress: string) {
 		const argumentsTypes = ['u16'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'redstuff',
 				function: 'metadata_size',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -74,7 +74,7 @@ export function init(packageAddress: string) {
 		const argumentsTypes = ['u16'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'redstuff',
 				function: 'decoding_safety_limit',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -84,7 +84,7 @@ export function init(packageAddress: string) {
 		const argumentsTypes = ['u16'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'redstuff',
 				function: 'max_byzantine',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),

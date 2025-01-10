@@ -12,12 +12,12 @@ export function InitCap() {
 		id: object.UID(),
 	});
 }
-export function init(packageAddress: string) {
+export function init(packageAddresses: { walrus: string }) {
 	function init(options: { arguments: [] }) {
 		const argumentsTypes: [] = [];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'init',
 				function: 'init',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -34,7 +34,7 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::init::InitCap',
+			`${packageAddresses.walrus}::init::InitCap`,
 			'u64',
 			'u64',
 			'u16',
@@ -43,19 +43,17 @@ export function init(packageAddress: string) {
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'init',
 				function: 'initialize_walrus',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function destroy(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::init::InitCap',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::init::InitCap`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'init',
 				function: 'destroy',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),

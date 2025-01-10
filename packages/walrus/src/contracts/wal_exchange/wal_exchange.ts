@@ -28,14 +28,14 @@ export function ExchangeRate() {
 		sui: bcs.u64(),
 	});
 }
-export function init(packageAddress: string) {
+export function init(packageAddresses: { wal: string; wal_exchange: string }) {
 	function new_exchange_rate(options: {
 		arguments: [RawTransactionArgument<number | bigint>, RawTransactionArgument<number | bigint>];
 	}) {
 		const argumentsTypes = ['u64', 'u64'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.wal_exchange,
 				module: 'wal_exchange',
 				function: 'new_exchange_rate',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -44,13 +44,10 @@ export function init(packageAddress: string) {
 	function wal_to_sui(options: {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<number | bigint>];
 	}) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::wal_exchange::ExchangeRate',
-			'u64',
-		];
+		const argumentsTypes = [`${packageAddresses.wal_exchange}::wal_exchange::ExchangeRate`, 'u64'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.wal_exchange,
 				module: 'wal_exchange',
 				function: 'wal_to_sui',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -59,13 +56,10 @@ export function init(packageAddress: string) {
 	function sui_to_wal(options: {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<number | bigint>];
 	}) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::wal_exchange::ExchangeRate',
-			'u64',
-		];
+		const argumentsTypes = [`${packageAddresses.wal_exchange}::wal_exchange::ExchangeRate`, 'u64'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.wal_exchange,
 				module: 'wal_exchange',
 				function: 'sui_to_wal',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -76,12 +70,12 @@ export function init(packageAddress: string) {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<number | bigint>];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0000000000000000000000000000000000000000000000000000000000000000::wal::WAL>',
+			`0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<${packageAddresses.wal}::wal::WAL>`,
 			'u64',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.wal_exchange,
 				module: 'wal_exchange',
 				function: 'new_funded',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -95,13 +89,13 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::wal_exchange::Exchange',
-			'0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0000000000000000000000000000000000000000000000000000000000000000::wal::WAL>',
+			`${packageAddresses.wal_exchange}::wal_exchange::Exchange`,
+			`0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<${packageAddresses.wal}::wal::WAL>`,
 			'u64',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.wal_exchange,
 				module: 'wal_exchange',
 				function: 'add_wal',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -115,13 +109,13 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::wal_exchange::Exchange',
+			`${packageAddresses.wal_exchange}::wal_exchange::Exchange`,
 			'0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0000000000000000000000000000000000000000000000000000000000000002::sui::SUI>',
 			'u64',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.wal_exchange,
 				module: 'wal_exchange',
 				function: 'add_sui',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -131,12 +125,12 @@ export function init(packageAddress: string) {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<string>];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::wal_exchange::Exchange',
-			'0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0000000000000000000000000000000000000000000000000000000000000000::wal::WAL>',
+			`${packageAddresses.wal_exchange}::wal_exchange::Exchange`,
+			`0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<${packageAddresses.wal}::wal::WAL>`,
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.wal_exchange,
 				module: 'wal_exchange',
 				function: 'add_all_wal',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -146,12 +140,12 @@ export function init(packageAddress: string) {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<string>];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::wal_exchange::Exchange',
+			`${packageAddresses.wal_exchange}::wal_exchange::Exchange`,
 			'0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0000000000000000000000000000000000000000000000000000000000000002::sui::SUI>',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.wal_exchange,
 				module: 'wal_exchange',
 				function: 'add_all_sui',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -161,12 +155,12 @@ export function init(packageAddress: string) {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<string>];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::wal_exchange::Exchange',
-			'0000000000000000000000000000000000000000000000000000000000000000::wal_exchange::AdminCap',
+			`${packageAddresses.wal_exchange}::wal_exchange::Exchange`,
+			`${packageAddresses.wal_exchange}::wal_exchange::AdminCap`,
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.wal_exchange,
 				module: 'wal_exchange',
 				function: 'check_admin',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -180,13 +174,13 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::wal_exchange::Exchange',
+			`${packageAddresses.wal_exchange}::wal_exchange::Exchange`,
 			'u64',
-			'0000000000000000000000000000000000000000000000000000000000000000::wal_exchange::AdminCap',
+			`${packageAddresses.wal_exchange}::wal_exchange::AdminCap`,
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.wal_exchange,
 				module: 'wal_exchange',
 				function: 'withdraw_wal',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -200,13 +194,13 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::wal_exchange::Exchange',
+			`${packageAddresses.wal_exchange}::wal_exchange::Exchange`,
 			'u64',
-			'0000000000000000000000000000000000000000000000000000000000000000::wal_exchange::AdminCap',
+			`${packageAddresses.wal_exchange}::wal_exchange::AdminCap`,
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.wal_exchange,
 				module: 'wal_exchange',
 				function: 'withdraw_sui',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -221,14 +215,14 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::wal_exchange::Exchange',
+			`${packageAddresses.wal_exchange}::wal_exchange::Exchange`,
 			'u64',
 			'u64',
-			'0000000000000000000000000000000000000000000000000000000000000000::wal_exchange::AdminCap',
+			`${packageAddresses.wal_exchange}::wal_exchange::AdminCap`,
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.wal_exchange,
 				module: 'wal_exchange',
 				function: 'set_exchange_rate',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -238,12 +232,12 @@ export function init(packageAddress: string) {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<string>];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::wal_exchange::Exchange',
+			`${packageAddresses.wal_exchange}::wal_exchange::Exchange`,
 			'0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0000000000000000000000000000000000000000000000000000000000000002::sui::SUI>',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.wal_exchange,
 				module: 'wal_exchange',
 				function: 'exchange_all_for_wal',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -257,13 +251,13 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::wal_exchange::Exchange',
+			`${packageAddresses.wal_exchange}::wal_exchange::Exchange`,
 			'0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0000000000000000000000000000000000000000000000000000000000000002::sui::SUI>',
 			'u64',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.wal_exchange,
 				module: 'wal_exchange',
 				function: 'exchange_for_wal',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -273,12 +267,12 @@ export function init(packageAddress: string) {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<string>];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::wal_exchange::Exchange',
-			'0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0000000000000000000000000000000000000000000000000000000000000000::wal::WAL>',
+			`${packageAddresses.wal_exchange}::wal_exchange::Exchange`,
+			`0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<${packageAddresses.wal}::wal::WAL>`,
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.wal_exchange,
 				module: 'wal_exchange',
 				function: 'exchange_all_for_sui',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -292,13 +286,13 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::wal_exchange::Exchange',
-			'0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0000000000000000000000000000000000000000000000000000000000000000::wal::WAL>',
+			`${packageAddresses.wal_exchange}::wal_exchange::Exchange`,
+			`0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<${packageAddresses.wal}::wal::WAL>`,
 			'u64',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.wal_exchange,
 				module: 'wal_exchange',
 				function: 'exchange_for_sui',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),

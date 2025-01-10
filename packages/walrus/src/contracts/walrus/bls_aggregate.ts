@@ -21,17 +21,17 @@ export function BlsCommittee() {
 		epoch: bcs.u32(),
 	});
 }
-export function init(packageAddress: string) {
+export function init(packageAddresses: { walrus: string }) {
 	function new_bls_committee(options: {
 		arguments: [RawTransactionArgument<number>, RawTransactionArgument<string[]>];
 	}) {
 		const argumentsTypes = [
 			'u32',
-			'vector<0000000000000000000000000000000000000000000000000000000000000000::bls_aggregate::BlsCommitteeMember>',
+			`vector<${packageAddresses.walrus}::bls_aggregate::BlsCommitteeMember>`,
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'bls_aggregate',
 				function: 'new_bls_committee',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -51,43 +51,37 @@ export function init(packageAddress: string) {
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'bls_aggregate',
 				function: 'new_bls_committee_member',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function node_id(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::bls_aggregate::BlsCommitteeMember',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::bls_aggregate::BlsCommitteeMember`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'bls_aggregate',
 				function: 'node_id',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function epoch(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::bls_aggregate::BlsCommittee',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::bls_aggregate::BlsCommittee`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'bls_aggregate',
 				function: 'epoch',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function n_shards(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::bls_aggregate::BlsCommittee',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::bls_aggregate::BlsCommittee`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'bls_aggregate',
 				function: 'n_shards',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -96,13 +90,10 @@ export function init(packageAddress: string) {
 	function get_idx(options: {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<number | bigint>];
 	}) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::bls_aggregate::BlsCommittee',
-			'u64',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::bls_aggregate::BlsCommittee`, 'u64'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'bls_aggregate',
 				function: 'get_idx',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -112,12 +103,12 @@ export function init(packageAddress: string) {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<string>];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::bls_aggregate::BlsCommittee',
+			`${packageAddresses.walrus}::bls_aggregate::BlsCommittee`,
 			'0000000000000000000000000000000000000000000000000000000000000002::object::ID',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'bls_aggregate',
 				function: 'contains',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -127,12 +118,12 @@ export function init(packageAddress: string) {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<string>];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::bls_aggregate::BlsCommittee',
+			`${packageAddresses.walrus}::bls_aggregate::BlsCommittee`,
 			'0000000000000000000000000000000000000000000000000000000000000002::object::ID',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'bls_aggregate',
 				function: 'get_member_weight',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -142,24 +133,22 @@ export function init(packageAddress: string) {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<string>];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::bls_aggregate::BlsCommittee',
+			`${packageAddresses.walrus}::bls_aggregate::BlsCommittee`,
 			'0000000000000000000000000000000000000000000000000000000000000002::object::ID',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'bls_aggregate',
 				function: 'find_index',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function to_vec_map(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::bls_aggregate::BlsCommittee',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::bls_aggregate::BlsCommittee`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'bls_aggregate',
 				function: 'to_vec_map',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -174,14 +163,14 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::bls_aggregate::BlsCommittee',
+			`${packageAddresses.walrus}::bls_aggregate::BlsCommittee`,
 			'vector<u8>',
 			'vector<u16>',
 			'vector<u8>',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'bls_aggregate',
 				function: 'verify_quorum_in_epoch',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -190,13 +179,10 @@ export function init(packageAddress: string) {
 	function verify_quorum(options: {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<number>];
 	}) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::bls_aggregate::BlsCommittee',
-			'u16',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::bls_aggregate::BlsCommittee`, 'u16'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'bls_aggregate',
 				function: 'verify_quorum',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -211,14 +197,14 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::bls_aggregate::BlsCommittee',
+			`${packageAddresses.walrus}::bls_aggregate::BlsCommittee`,
 			'vector<u8>',
 			'vector<u16>',
 			'vector<u8>',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'bls_aggregate',
 				function: 'verify_certificate',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),

@@ -13,38 +13,32 @@ export function EpochParams() {
 		write_price_per_unit_size: bcs.u64(),
 	});
 }
-export function init(packageAddress: string) {
+export function init(packageAddresses: { walrus: string }) {
 	function capacity(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::epoch_parameters::EpochParams',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::epoch_parameters::EpochParams`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'epoch_parameters',
 				function: 'capacity',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function storage_price(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::epoch_parameters::EpochParams',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::epoch_parameters::EpochParams`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'epoch_parameters',
 				function: 'storage_price',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function write_price(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::epoch_parameters::EpochParams',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::epoch_parameters::EpochParams`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'epoch_parameters',
 				function: 'write_price',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -54,7 +48,7 @@ export function init(packageAddress: string) {
 		const argumentsTypes: [] = [];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'epoch_parameters',
 				function: 'epoch_params_for_testing',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),

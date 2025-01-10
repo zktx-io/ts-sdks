@@ -11,14 +11,12 @@ export function WAL() {
 		dummy_field: bcs.bool(),
 	});
 }
-export function init(packageAddress: string) {
+export function init(packageAddresses: { wal: string }) {
 	function init(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::wal::WAL',
-		];
+		const argumentsTypes = [`${packageAddresses.wal}::wal::WAL`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.wal,
 				module: 'wal',
 				function: 'init',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),

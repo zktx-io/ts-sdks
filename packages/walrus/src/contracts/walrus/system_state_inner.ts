@@ -22,12 +22,12 @@ export function SystemStateInnerV1() {
 		event_blob_certification_state: event_blob.EventBlobCertificationState(),
 	});
 }
-export function init(packageAddress: string) {
+export function init(packageAddresses: { walrus: string; wal: string }) {
 	function create_empty(options: { arguments: [RawTransactionArgument<number>] }) {
 		const argumentsTypes = ['u32'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'system_state_inner',
 				function: 'create_empty',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -41,13 +41,13 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::system_state_inner::SystemStateInnerV1',
-			'0000000000000000000000000000000000000000000000000000000000000000::bls_aggregate::BlsCommittee',
-			'0000000000000000000000000000000000000000000000000000000000000000::epoch_parameters::EpochParams',
+			`${packageAddresses.walrus}::system_state_inner::SystemStateInnerV1`,
+			`${packageAddresses.walrus}::bls_aggregate::BlsCommittee`,
+			`${packageAddresses.walrus}::epoch_parameters::EpochParams`,
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'system_state_inner',
 				function: 'advance_epoch',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -62,14 +62,14 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::system_state_inner::SystemStateInnerV1',
+			`${packageAddresses.walrus}::system_state_inner::SystemStateInnerV1`,
 			'u64',
 			'u32',
-			'0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0000000000000000000000000000000000000000000000000000000000000000::wal::WAL>',
+			`0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<${packageAddresses.wal}::wal::WAL>`,
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'system_state_inner',
 				function: 'reserve_space',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -83,13 +83,13 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::system_state_inner::SystemStateInnerV1',
+			`${packageAddresses.walrus}::system_state_inner::SystemStateInnerV1`,
 			'u64',
 			'u32',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'system_state_inner',
 				function: 'reserve_space_without_payment',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -104,14 +104,14 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::system_state_inner::SystemStateInnerV1',
+			`${packageAddresses.walrus}::system_state_inner::SystemStateInnerV1`,
 			'vector<u8>',
 			'vector<u16>',
 			'vector<u8>',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'system_state_inner',
 				function: 'invalidate_blob_id',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -130,18 +130,18 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::system_state_inner::SystemStateInnerV1',
-			'0000000000000000000000000000000000000000000000000000000000000000::storage_resource::Storage',
+			`${packageAddresses.walrus}::system_state_inner::SystemStateInnerV1`,
+			`${packageAddresses.walrus}::storage_resource::Storage`,
 			'u256',
 			'u256',
 			'u64',
 			'u8',
 			'bool',
-			'0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0000000000000000000000000000000000000000000000000000000000000000::wal::WAL>',
+			`0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<${packageAddresses.wal}::wal::WAL>`,
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'system_state_inner',
 				function: 'register_blob',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -157,15 +157,15 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::system_state_inner::SystemStateInnerV1',
-			'0000000000000000000000000000000000000000000000000000000000000000::blob::Blob',
+			`${packageAddresses.walrus}::system_state_inner::SystemStateInnerV1`,
+			`${packageAddresses.walrus}::blob::Blob`,
 			'vector<u8>',
 			'vector<u16>',
 			'vector<u8>',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'system_state_inner',
 				function: 'certify_blob',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -175,12 +175,12 @@ export function init(packageAddress: string) {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<string>];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::system_state_inner::SystemStateInnerV1',
-			'0000000000000000000000000000000000000000000000000000000000000000::blob::Blob',
+			`${packageAddresses.walrus}::system_state_inner::SystemStateInnerV1`,
+			`${packageAddresses.walrus}::blob::Blob`,
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'system_state_inner',
 				function: 'delete_blob',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -194,13 +194,13 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::system_state_inner::SystemStateInnerV1',
-			'0000000000000000000000000000000000000000000000000000000000000000::blob::Blob',
-			'0000000000000000000000000000000000000000000000000000000000000000::storage_resource::Storage',
+			`${packageAddresses.walrus}::system_state_inner::SystemStateInnerV1`,
+			`${packageAddresses.walrus}::blob::Blob`,
+			`${packageAddresses.walrus}::storage_resource::Storage`,
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'system_state_inner',
 				function: 'extend_blob_with_resource',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -215,14 +215,14 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::system_state_inner::SystemStateInnerV1',
-			'0000000000000000000000000000000000000000000000000000000000000000::blob::Blob',
+			`${packageAddresses.walrus}::system_state_inner::SystemStateInnerV1`,
+			`${packageAddresses.walrus}::blob::Blob`,
 			'u32',
-			'0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0000000000000000000000000000000000000000000000000000000000000000::wal::WAL>',
+			`0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<${packageAddresses.wal}::wal::WAL>`,
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'system_state_inner',
 				function: 'extend_blob',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -238,15 +238,15 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::system_state_inner::SystemStateInnerV1',
+			`${packageAddresses.walrus}::system_state_inner::SystemStateInnerV1`,
 			'u64',
 			'u32',
 			'u32',
-			'0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<0000000000000000000000000000000000000000000000000000000000000000::wal::WAL>',
+			`0000000000000000000000000000000000000000000000000000000000000002::coin::Coin<${packageAddresses.wal}::wal::WAL>`,
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'system_state_inner',
 				function: 'process_storage_payments',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -265,8 +265,8 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::system_state_inner::SystemStateInnerV1',
-			'0000000000000000000000000000000000000000000000000000000000000000::storage_node::StorageNodeCap',
+			`${packageAddresses.walrus}::system_state_inner::SystemStateInnerV1`,
+			`${packageAddresses.walrus}::storage_node::StorageNodeCap`,
 			'u256',
 			'u256',
 			'u64',
@@ -276,67 +276,57 @@ export function init(packageAddress: string) {
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'system_state_inner',
 				function: 'certify_event_blob',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function epoch(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::system_state_inner::SystemStateInnerV1',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::system_state_inner::SystemStateInnerV1`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'system_state_inner',
 				function: 'epoch',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function total_capacity_size(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::system_state_inner::SystemStateInnerV1',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::system_state_inner::SystemStateInnerV1`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'system_state_inner',
 				function: 'total_capacity_size',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function used_capacity_size(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::system_state_inner::SystemStateInnerV1',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::system_state_inner::SystemStateInnerV1`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'system_state_inner',
 				function: 'used_capacity_size',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function committee(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::system_state_inner::SystemStateInnerV1',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::system_state_inner::SystemStateInnerV1`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'system_state_inner',
 				function: 'committee',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function n_shards(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::system_state_inner::SystemStateInnerV1',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::system_state_inner::SystemStateInnerV1`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'system_state_inner',
 				function: 'n_shards',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -346,12 +336,12 @@ export function init(packageAddress: string) {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<number | bigint>];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::system_state_inner::SystemStateInnerV1',
+			`${packageAddresses.walrus}::system_state_inner::SystemStateInnerV1`,
 			'u64',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'system_state_inner',
 				function: 'write_price',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -363,7 +353,7 @@ export function init(packageAddress: string) {
 		const argumentsTypes = ['u64'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'system_state_inner',
 				function: 'storage_units_from_size',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),

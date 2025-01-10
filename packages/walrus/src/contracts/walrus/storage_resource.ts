@@ -15,38 +15,32 @@ export function Storage() {
 		storage_size: bcs.u64(),
 	});
 }
-export function init(packageAddress: string) {
+export function init(packageAddresses: { walrus: string }) {
 	function start_epoch(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::storage_resource::Storage',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::storage_resource::Storage`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'storage_resource',
 				function: 'start_epoch',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function end_epoch(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::storage_resource::Storage',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::storage_resource::Storage`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'storage_resource',
 				function: 'end_epoch',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function storage_size(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::storage_resource::Storage',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::storage_resource::Storage`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'storage_resource',
 				function: 'storage_size',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -62,7 +56,7 @@ export function init(packageAddress: string) {
 		const argumentsTypes = ['u32', 'u32', 'u64'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'storage_resource',
 				function: 'create_storage',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -71,13 +65,10 @@ export function init(packageAddress: string) {
 	function extend_end_epoch(options: {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<number>];
 	}) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::storage_resource::Storage',
-			'u32',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::storage_resource::Storage`, 'u32'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'storage_resource',
 				function: 'extend_end_epoch',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -86,13 +77,10 @@ export function init(packageAddress: string) {
 	function split_by_epoch(options: {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<number>];
 	}) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::storage_resource::Storage',
-			'u32',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::storage_resource::Storage`, 'u32'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'storage_resource',
 				function: 'split_by_epoch',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -101,13 +89,10 @@ export function init(packageAddress: string) {
 	function split_by_size(options: {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<number | bigint>];
 	}) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::storage_resource::Storage',
-			'u64',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::storage_resource::Storage`, 'u64'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'storage_resource',
 				function: 'split_by_size',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -117,12 +102,12 @@ export function init(packageAddress: string) {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<string>];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::storage_resource::Storage',
-			'0000000000000000000000000000000000000000000000000000000000000000::storage_resource::Storage',
+			`${packageAddresses.walrus}::storage_resource::Storage`,
+			`${packageAddresses.walrus}::storage_resource::Storage`,
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'storage_resource',
 				function: 'fuse_periods',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -132,12 +117,12 @@ export function init(packageAddress: string) {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<string>];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::storage_resource::Storage',
-			'0000000000000000000000000000000000000000000000000000000000000000::storage_resource::Storage',
+			`${packageAddresses.walrus}::storage_resource::Storage`,
+			`${packageAddresses.walrus}::storage_resource::Storage`,
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'storage_resource',
 				function: 'fuse_amount',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -147,24 +132,22 @@ export function init(packageAddress: string) {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<string>];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::storage_resource::Storage',
-			'0000000000000000000000000000000000000000000000000000000000000000::storage_resource::Storage',
+			`${packageAddresses.walrus}::storage_resource::Storage`,
+			`${packageAddresses.walrus}::storage_resource::Storage`,
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'storage_resource',
 				function: 'fuse',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function destroy(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::storage_resource::Storage',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::storage_resource::Storage`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'storage_resource',
 				function: 'destroy',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),

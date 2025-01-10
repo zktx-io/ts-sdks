@@ -21,7 +21,7 @@ export function FutureAccountingRingBuffer() {
 		ring_buffer: bcs.vector(FutureAccounting()),
 	});
 }
-export function init(packageAddress: string) {
+export function init(packageAddresses: { walrus: string; wal: string }) {
 	function new_future_accounting(options: {
 		arguments: [
 			RawTransactionArgument<number>,
@@ -32,35 +32,31 @@ export function init(packageAddress: string) {
 		const argumentsTypes = [
 			'u32',
 			'u64',
-			'0000000000000000000000000000000000000000000000000000000000000002::balance::Balance<0000000000000000000000000000000000000000000000000000000000000000::wal::WAL>',
+			`0000000000000000000000000000000000000000000000000000000000000002::balance::Balance<${packageAddresses.wal}::wal::WAL>`,
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'storage_accounting',
 				function: 'new_future_accounting',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function epoch(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::storage_accounting::FutureAccounting',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::storage_accounting::FutureAccounting`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'storage_accounting',
 				function: 'epoch',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function storage_to_reclaim(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::storage_accounting::FutureAccounting',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::storage_accounting::FutureAccounting`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'storage_accounting',
 				function: 'storage_to_reclaim',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -70,12 +66,12 @@ export function init(packageAddress: string) {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<number | bigint>];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::storage_accounting::FutureAccounting',
+			`${packageAddresses.walrus}::storage_accounting::FutureAccounting`,
 			'u64',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'storage_accounting',
 				function: 'increase_storage_to_reclaim',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -85,24 +81,22 @@ export function init(packageAddress: string) {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<number | bigint>];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::storage_accounting::FutureAccounting',
+			`${packageAddresses.walrus}::storage_accounting::FutureAccounting`,
 			'u64',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'storage_accounting',
 				function: 'decrease_storage_to_reclaim',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function rewards_balance(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::storage_accounting::FutureAccounting',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::storage_accounting::FutureAccounting`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'storage_accounting',
 				function: 'rewards_balance',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -111,24 +105,20 @@ export function init(packageAddress: string) {
 	function delete_empty_future_accounting(options: {
 		arguments: [RawTransactionArgument<string>];
 	}) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::storage_accounting::FutureAccounting',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::storage_accounting::FutureAccounting`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'storage_accounting',
 				function: 'delete_empty_future_accounting',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function unwrap_balance(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::storage_accounting::FutureAccounting',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::storage_accounting::FutureAccounting`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'storage_accounting',
 				function: 'unwrap_balance',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -138,7 +128,7 @@ export function init(packageAddress: string) {
 		const argumentsTypes = ['u32'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'storage_accounting',
 				function: 'ring_new',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -148,12 +138,12 @@ export function init(packageAddress: string) {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<number>];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::storage_accounting::FutureAccountingRingBuffer',
+			`${packageAddresses.walrus}::storage_accounting::FutureAccountingRingBuffer`,
 			'u32',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'storage_accounting',
 				function: 'ring_lookup_mut',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -161,11 +151,11 @@ export function init(packageAddress: string) {
 	}
 	function ring_pop_expand(options: { arguments: [RawTransactionArgument<string>] }) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::storage_accounting::FutureAccountingRingBuffer',
+			`${packageAddresses.walrus}::storage_accounting::FutureAccountingRingBuffer`,
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'storage_accounting',
 				function: 'ring_pop_expand',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -173,11 +163,11 @@ export function init(packageAddress: string) {
 	}
 	function max_epochs_ahead(options: { arguments: [RawTransactionArgument<string>] }) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::storage_accounting::FutureAccountingRingBuffer',
+			`${packageAddresses.walrus}::storage_accounting::FutureAccountingRingBuffer`,
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'storage_accounting',
 				function: 'max_epochs_ahead',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),

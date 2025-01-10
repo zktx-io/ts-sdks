@@ -27,14 +27,14 @@ export function EventBlobCertificationState() {
 		aggregate_weight_per_blob: vec_map.VecMap(bcs.u256(), bcs.u16()),
 	});
 }
-export function init(packageAddress: string) {
+export function init(packageAddresses: { walrus: string }) {
 	function new_attestation(options: {
 		arguments: [RawTransactionArgument<number | bigint>, RawTransactionArgument<number>];
 	}) {
 		const argumentsTypes = ['u64', 'u32'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'event_blob',
 				function: 'new_attestation',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -43,12 +43,10 @@ export function init(packageAddress: string) {
 	function last_attested_event_blob_checkpoint_seq_num(options: {
 		arguments: [RawTransactionArgument<string>];
 	}) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::event_blob::EventBlobAttestation',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::event_blob::EventBlobAttestation`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'event_blob',
 				function: 'last_attested_event_blob_checkpoint_seq_num',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -57,12 +55,10 @@ export function init(packageAddress: string) {
 	function last_attested_event_blob_epoch(options: {
 		arguments: [RawTransactionArgument<string>];
 	}) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::event_blob::EventBlobAttestation',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::event_blob::EventBlobAttestation`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'event_blob',
 				function: 'last_attested_event_blob_epoch',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -74,19 +70,17 @@ export function init(packageAddress: string) {
 		const argumentsTypes = ['u64', 'u256'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'event_blob',
 				function: 'new_event_blob',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function blob_id(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::event_blob::EventBlob',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::event_blob::EventBlob`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'event_blob',
 				function: 'blob_id',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -95,12 +89,10 @@ export function init(packageAddress: string) {
 	function ending_checkpoint_sequence_number(options: {
 		arguments: [RawTransactionArgument<string>];
 	}) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::event_blob::EventBlob',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::event_blob::EventBlob`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'event_blob',
 				function: 'ending_checkpoint_sequence_number',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -110,19 +102,17 @@ export function init(packageAddress: string) {
 		const argumentsTypes: [] = [];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'event_blob',
 				function: 'create_with_empty_state',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function get_latest_certified_blob_id(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::event_blob::EventBlobCertificationState',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::event_blob::EventBlobCertificationState`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'event_blob',
 				function: 'get_latest_certified_blob_id',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -131,12 +121,10 @@ export function init(packageAddress: string) {
 	function get_latest_certified_checkpoint_sequence_number(options: {
 		arguments: [RawTransactionArgument<string>];
 	}) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::event_blob::EventBlobCertificationState',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::event_blob::EventBlobCertificationState`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'event_blob',
 				function: 'get_latest_certified_checkpoint_sequence_number',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -146,12 +134,12 @@ export function init(packageAddress: string) {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<number | bigint>];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::event_blob::EventBlobCertificationState',
+			`${packageAddresses.walrus}::event_blob::EventBlobCertificationState`,
 			'u64',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'event_blob',
 				function: 'is_blob_already_certified',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -165,13 +153,13 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::event_blob::EventBlobCertificationState',
+			`${packageAddresses.walrus}::event_blob::EventBlobCertificationState`,
 			'u64',
 			'u256',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'event_blob',
 				function: 'update_latest_certified_event_blob',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -185,13 +173,13 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::event_blob::EventBlobCertificationState',
+			`${packageAddresses.walrus}::event_blob::EventBlobCertificationState`,
 			'u256',
 			'u16',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'event_blob',
 				function: 'update_aggregate_weight',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -201,12 +189,12 @@ export function init(packageAddress: string) {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<number | bigint>];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::event_blob::EventBlobCertificationState',
+			`${packageAddresses.walrus}::event_blob::EventBlobCertificationState`,
 			'u256',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'event_blob',
 				function: 'start_tracking_blob',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -216,24 +204,22 @@ export function init(packageAddress: string) {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<number | bigint>];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::event_blob::EventBlobCertificationState',
+			`${packageAddresses.walrus}::event_blob::EventBlobCertificationState`,
 			'u256',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'event_blob',
 				function: 'stop_tracking_blob',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function reset(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::event_blob::EventBlobCertificationState',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::event_blob::EventBlobCertificationState`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'event_blob',
 				function: 'reset',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),

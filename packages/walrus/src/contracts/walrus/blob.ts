@@ -27,74 +27,62 @@ export function BlobIdDerivation() {
 		root_hash: bcs.u256(),
 	});
 }
-export function init(packageAddress: string) {
+export function init(packageAddresses: { walrus: string }) {
 	function registered_epoch(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::blob::Blob',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::blob::Blob`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'blob',
 				function: 'registered_epoch',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function blob_id(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::blob::Blob',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::blob::Blob`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'blob',
 				function: 'blob_id',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function size(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::blob::Blob',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::blob::Blob`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'blob',
 				function: 'size',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function encoding_type(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::blob::Blob',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::blob::Blob`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'blob',
 				function: 'encoding_type',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function certified_epoch(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::blob::Blob',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::blob::Blob`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'blob',
 				function: 'certified_epoch',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function storage(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::blob::Blob',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::blob::Blob`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'blob',
 				function: 'storage',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -103,37 +91,30 @@ export function init(packageAddress: string) {
 	function encoded_size(options: {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<number>];
 	}) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::blob::Blob',
-			'u16',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::blob::Blob`, 'u16'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'blob',
 				function: 'encoded_size',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function storage_mut(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::blob::Blob',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::blob::Blob`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'blob',
 				function: 'storage_mut',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function end_epoch(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::blob::Blob',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::blob::Blob`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'blob',
 				function: 'end_epoch',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -142,13 +123,10 @@ export function init(packageAddress: string) {
 	function assert_certified_not_expired(options: {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<number>];
 	}) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::blob::Blob',
-			'u32',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::blob::Blob`, 'u32'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'blob',
 				function: 'assert_certified_not_expired',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -164,7 +142,7 @@ export function init(packageAddress: string) {
 		const argumentsTypes = ['u256', 'u8', 'u64'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'blob',
 				function: 'derive_blob_id',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -179,13 +157,13 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::blob::Blob',
+			`${packageAddresses.walrus}::blob::Blob`,
 			'u32',
-			'0000000000000000000000000000000000000000000000000000000000000000::messages::CertifiedBlobMessage',
+			`${packageAddresses.walrus}::messages::CertifiedBlobMessage`,
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'blob',
 				function: 'certify_with_certified_msg',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -193,12 +171,10 @@ export function init(packageAddress: string) {
 	}
 
 	function burn(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::blob::Blob',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::blob::Blob`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'blob',
 				function: 'burn',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -212,13 +188,13 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::blob::Blob',
-			'0000000000000000000000000000000000000000000000000000000000000000::storage_resource::Storage',
+			`${packageAddresses.walrus}::blob::Blob`,
+			`${packageAddresses.walrus}::storage_resource::Storage`,
 			'u32',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'blob',
 				function: 'extend_with_resource',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -227,13 +203,10 @@ export function init(packageAddress: string) {
 	function emit_certified(options: {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<boolean>];
 	}) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::blob::Blob',
-			'bool',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::blob::Blob`, 'bool'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'blob',
 				function: 'emit_certified',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -243,36 +216,32 @@ export function init(packageAddress: string) {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<string>];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::blob::Blob',
-			'0000000000000000000000000000000000000000000000000000000000000000::metadata::Metadata',
+			`${packageAddresses.walrus}::blob::Blob`,
+			`${packageAddresses.walrus}::metadata::Metadata`,
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'blob',
 				function: 'add_metadata',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function take_metadata(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::blob::Blob',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::blob::Blob`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'blob',
 				function: 'take_metadata',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function metadata(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::blob::Blob',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::blob::Blob`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'blob',
 				function: 'metadata',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -286,13 +255,13 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::blob::Blob',
+			`${packageAddresses.walrus}::blob::Blob`,
 			'0000000000000000000000000000000000000000000000000000000000000001::string::String',
 			'0000000000000000000000000000000000000000000000000000000000000001::string::String',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'blob',
 				function: 'insert_or_update_metadata_pair',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -302,12 +271,12 @@ export function init(packageAddress: string) {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<string>];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::blob::Blob',
+			`${packageAddresses.walrus}::blob::Blob`,
 			'0000000000000000000000000000000000000000000000000000000000000001::string::String',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'blob',
 				function: 'remove_metadata_pair',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),

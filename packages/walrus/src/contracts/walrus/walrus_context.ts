@@ -14,38 +14,32 @@ export function WalrusContext() {
 		committee: vec_map.VecMap(bcs.Address, bcs.vector(bcs.u16())),
 	});
 }
-export function init(packageAddress: string) {
+export function init(packageAddresses: { walrus: string }) {
 	function epoch(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::walrus_context::WalrusContext',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::walrus_context::WalrusContext`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'walrus_context',
 				function: 'epoch',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function committee_selected(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::walrus_context::WalrusContext',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::walrus_context::WalrusContext`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'walrus_context',
 				function: 'committee_selected',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function committee(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::walrus_context::WalrusContext',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::walrus_context::WalrusContext`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'walrus_context',
 				function: 'committee',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),

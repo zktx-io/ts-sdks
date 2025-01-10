@@ -43,17 +43,17 @@ export function PoolState() {
 		Withdrawn: null,
 	});
 }
-export function init(packageAddress: string) {
+export function init(packageAddresses: { walrus: string; wal: string }) {
 	function set_withdrawing(options: {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<string>];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staking_pool::StakingPool',
-			'0000000000000000000000000000000000000000000000000000000000000000::walrus_context::WalrusContext',
+			`${packageAddresses.walrus}::staking_pool::StakingPool`,
+			`${packageAddresses.walrus}::walrus_context::WalrusContext`,
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staking_pool',
 				function: 'set_withdrawing',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -67,13 +67,13 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staking_pool::StakingPool',
-			'0000000000000000000000000000000000000000000000000000000000000002::balance::Balance<0000000000000000000000000000000000000000000000000000000000000000::wal::WAL>',
-			'0000000000000000000000000000000000000000000000000000000000000000::walrus_context::WalrusContext',
+			`${packageAddresses.walrus}::staking_pool::StakingPool`,
+			`0000000000000000000000000000000000000000000000000000000000000002::balance::Balance<${packageAddresses.wal}::wal::WAL>`,
+			`${packageAddresses.walrus}::walrus_context::WalrusContext`,
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staking_pool',
 				function: 'stake',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -87,13 +87,13 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staking_pool::StakingPool',
-			'0000000000000000000000000000000000000000000000000000000000000000::staked_wal::StakedWal',
-			'0000000000000000000000000000000000000000000000000000000000000000::walrus_context::WalrusContext',
+			`${packageAddresses.walrus}::staking_pool::StakingPool`,
+			`${packageAddresses.walrus}::staked_wal::StakedWal`,
+			`${packageAddresses.walrus}::walrus_context::WalrusContext`,
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staking_pool',
 				function: 'request_withdraw_stake',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -107,13 +107,13 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staking_pool::StakingPool',
-			'0000000000000000000000000000000000000000000000000000000000000000::staked_wal::StakedWal',
-			'0000000000000000000000000000000000000000000000000000000000000000::walrus_context::WalrusContext',
+			`${packageAddresses.walrus}::staking_pool::StakingPool`,
+			`${packageAddresses.walrus}::staked_wal::StakedWal`,
+			`${packageAddresses.walrus}::walrus_context::WalrusContext`,
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staking_pool',
 				function: 'withdraw_stake',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -127,13 +127,13 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staking_pool::StakingPool',
-			'0000000000000000000000000000000000000000000000000000000000000002::balance::Balance<0000000000000000000000000000000000000000000000000000000000000000::wal::WAL>',
-			'0000000000000000000000000000000000000000000000000000000000000000::walrus_context::WalrusContext',
+			`${packageAddresses.walrus}::staking_pool::StakingPool`,
+			`0000000000000000000000000000000000000000000000000000000000000002::balance::Balance<${packageAddresses.wal}::wal::WAL>`,
+			`${packageAddresses.walrus}::walrus_context::WalrusContext`,
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staking_pool',
 				function: 'advance_epoch',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -143,12 +143,12 @@ export function init(packageAddress: string) {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<string>];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staking_pool::StakingPool',
-			'0000000000000000000000000000000000000000000000000000000000000000::walrus_context::WalrusContext',
+			`${packageAddresses.walrus}::staking_pool::StakingPool`,
+			`${packageAddresses.walrus}::walrus_context::WalrusContext`,
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staking_pool',
 				function: 'process_pending_stake',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -157,13 +157,10 @@ export function init(packageAddress: string) {
 	function set_next_commission(options: {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<number | bigint>];
 	}) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staking_pool::StakingPool',
-			'u64',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::staking_pool::StakingPool`, 'u64'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staking_pool',
 				function: 'set_next_commission',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -172,13 +169,10 @@ export function init(packageAddress: string) {
 	function set_next_storage_price(options: {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<number | bigint>];
 	}) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staking_pool::StakingPool',
-			'u64',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::staking_pool::StakingPool`, 'u64'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staking_pool',
 				function: 'set_next_storage_price',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -187,13 +181,10 @@ export function init(packageAddress: string) {
 	function set_next_write_price(options: {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<number | bigint>];
 	}) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staking_pool::StakingPool',
-			'u64',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::staking_pool::StakingPool`, 'u64'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staking_pool',
 				function: 'set_next_write_price',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -202,13 +193,10 @@ export function init(packageAddress: string) {
 	function set_next_node_capacity(options: {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<number | bigint>];
 	}) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staking_pool::StakingPool',
-			'u64',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::staking_pool::StakingPool`, 'u64'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staking_pool',
 				function: 'set_next_node_capacity',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -223,14 +211,14 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staking_pool::StakingPool',
+			`${packageAddresses.walrus}::staking_pool::StakingPool`,
 			'vector<u8>',
 			'vector<u8>',
-			'0000000000000000000000000000000000000000000000000000000000000000::walrus_context::WalrusContext',
+			`${packageAddresses.walrus}::walrus_context::WalrusContext`,
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staking_pool',
 				function: 'set_next_public_key',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -240,12 +228,12 @@ export function init(packageAddress: string) {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<string>];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staking_pool::StakingPool',
+			`${packageAddresses.walrus}::staking_pool::StakingPool`,
 			'0000000000000000000000000000000000000000000000000000000000000001::string::String',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staking_pool',
 				function: 'set_name',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -255,12 +243,12 @@ export function init(packageAddress: string) {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<string>];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staking_pool::StakingPool',
+			`${packageAddresses.walrus}::staking_pool::StakingPool`,
 			'0000000000000000000000000000000000000000000000000000000000000001::string::String',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staking_pool',
 				function: 'set_network_address',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -269,25 +257,20 @@ export function init(packageAddress: string) {
 	function set_network_public_key(options: {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<number[]>];
 	}) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staking_pool::StakingPool',
-			'vector<u8>',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::staking_pool::StakingPool`, 'vector<u8>'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staking_pool',
 				function: 'set_network_public_key',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function destroy_empty(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staking_pool::StakingPool',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::staking_pool::StakingPool`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staking_pool',
 				function: 'destroy_empty',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -296,13 +279,10 @@ export function init(packageAddress: string) {
 	function exchange_rate_at_epoch(options: {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<number>];
 	}) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staking_pool::StakingPool',
-			'u32',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::staking_pool::StakingPool`, 'u32'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staking_pool',
 				function: 'exchange_rate_at_epoch',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -311,157 +291,130 @@ export function init(packageAddress: string) {
 	function wal_balance_at_epoch(options: {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<number>];
 	}) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staking_pool::StakingPool',
-			'u32',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::staking_pool::StakingPool`, 'u32'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staking_pool',
 				function: 'wal_balance_at_epoch',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function commission_rate(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staking_pool::StakingPool',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::staking_pool::StakingPool`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staking_pool',
 				function: 'commission_rate',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function rewards_amount(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staking_pool::StakingPool',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::staking_pool::StakingPool`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staking_pool',
 				function: 'rewards_amount',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function wal_balance(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staking_pool::StakingPool',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::staking_pool::StakingPool`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staking_pool',
 				function: 'wal_balance',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function storage_price(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staking_pool::StakingPool',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::staking_pool::StakingPool`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staking_pool',
 				function: 'storage_price',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function write_price(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staking_pool::StakingPool',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::staking_pool::StakingPool`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staking_pool',
 				function: 'write_price',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function node_capacity(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staking_pool::StakingPool',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::staking_pool::StakingPool`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staking_pool',
 				function: 'node_capacity',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function activation_epoch(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staking_pool::StakingPool',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::staking_pool::StakingPool`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staking_pool',
 				function: 'activation_epoch',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function node_info(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staking_pool::StakingPool',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::staking_pool::StakingPool`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staking_pool',
 				function: 'node_info',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function is_new(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staking_pool::StakingPool',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::staking_pool::StakingPool`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staking_pool',
 				function: 'is_new',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function is_active(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staking_pool::StakingPool',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::staking_pool::StakingPool`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staking_pool',
 				function: 'is_active',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function is_withdrawing(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staking_pool::StakingPool',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::staking_pool::StakingPool`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staking_pool',
 				function: 'is_withdrawing',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function is_empty(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staking_pool::StakingPool',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::staking_pool::StakingPool`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staking_pool',
 				function: 'is_empty',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),

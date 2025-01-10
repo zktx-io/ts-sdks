@@ -25,7 +25,7 @@ export function StakedWalState() {
 		Withdrawing: bcs.tuple([bcs.u32(), bcs.u64()]),
 	});
 }
-export function init(packageAddress: string) {
+export function init(packageAddresses: { walrus: string; wal: string }) {
 	function mint(options: {
 		arguments: [
 			RawTransactionArgument<string>,
@@ -35,24 +35,22 @@ export function init(packageAddress: string) {
 	}) {
 		const argumentsTypes = [
 			'0000000000000000000000000000000000000000000000000000000000000002::object::ID',
-			'0000000000000000000000000000000000000000000000000000000000000002::balance::Balance<0000000000000000000000000000000000000000000000000000000000000000::wal::WAL>',
+			`0000000000000000000000000000000000000000000000000000000000000002::balance::Balance<${packageAddresses.wal}::wal::WAL>`,
 			'u32',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staked_wal',
 				function: 'mint',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function into_balance(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staked_wal::StakedWal',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::staked_wal::StakedWal`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staked_wal',
 				function: 'into_balance',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -65,98 +63,80 @@ export function init(packageAddress: string) {
 			RawTransactionArgument<number | bigint>,
 		];
 	}) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staked_wal::StakedWal',
-			'u32',
-			'u64',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::staked_wal::StakedWal`, 'u32', 'u64'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staked_wal',
 				function: 'set_withdrawing',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function node_id(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staked_wal::StakedWal',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::staked_wal::StakedWal`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staked_wal',
 				function: 'node_id',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function value(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staked_wal::StakedWal',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::staked_wal::StakedWal`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staked_wal',
 				function: 'value',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function activation_epoch(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staked_wal::StakedWal',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::staked_wal::StakedWal`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staked_wal',
 				function: 'activation_epoch',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function is_staked(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staked_wal::StakedWal',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::staked_wal::StakedWal`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staked_wal',
 				function: 'is_staked',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function is_withdrawing(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staked_wal::StakedWal',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::staked_wal::StakedWal`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staked_wal',
 				function: 'is_withdrawing',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function withdraw_epoch(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staked_wal::StakedWal',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::staked_wal::StakedWal`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staked_wal',
 				function: 'withdraw_epoch',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function pool_token_amount(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staked_wal::StakedWal',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::staked_wal::StakedWal`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staked_wal',
 				function: 'pool_token_amount',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -166,12 +146,12 @@ export function init(packageAddress: string) {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<string>];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staked_wal::StakedWal',
-			'0000000000000000000000000000000000000000000000000000000000000000::staked_wal::StakedWal',
+			`${packageAddresses.walrus}::staked_wal::StakedWal`,
+			`${packageAddresses.walrus}::staked_wal::StakedWal`,
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staked_wal',
 				function: 'join',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -180,25 +160,20 @@ export function init(packageAddress: string) {
 	function split(options: {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<number | bigint>];
 	}) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staked_wal::StakedWal',
-			'u64',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::staked_wal::StakedWal`, 'u64'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staked_wal',
 				function: 'split',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function destroy_zero(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::staked_wal::StakedWal',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::staked_wal::StakedWal`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'staked_wal',
 				function: 'destroy_zero',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),

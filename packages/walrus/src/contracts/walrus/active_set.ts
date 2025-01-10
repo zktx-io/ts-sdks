@@ -20,7 +20,7 @@ export function ActiveSet() {
 		total_stake: bcs.u64(),
 	});
 }
-export function init(packageAddress: string) {
+export function init(packageAddresses: { walrus: string }) {
 	function insert_or_update(options: {
 		arguments: [
 			RawTransactionArgument<string>,
@@ -29,13 +29,13 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::active_set::ActiveSet',
+			`${packageAddresses.walrus}::active_set::ActiveSet`,
 			'0000000000000000000000000000000000000000000000000000000000000002::object::ID',
 			'u64',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'active_set',
 				function: 'insert_or_update',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -49,13 +49,13 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::active_set::ActiveSet',
+			`${packageAddresses.walrus}::active_set::ActiveSet`,
 			'0000000000000000000000000000000000000000000000000000000000000002::object::ID',
 			'u64',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'active_set',
 				function: 'update',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -69,13 +69,13 @@ export function init(packageAddress: string) {
 		];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::active_set::ActiveSet',
+			`${packageAddresses.walrus}::active_set::ActiveSet`,
 			'0000000000000000000000000000000000000000000000000000000000000002::object::ID',
 			'u64',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'active_set',
 				function: 'insert',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -85,84 +85,72 @@ export function init(packageAddress: string) {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<string>];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::active_set::ActiveSet',
+			`${packageAddresses.walrus}::active_set::ActiveSet`,
 			'0000000000000000000000000000000000000000000000000000000000000002::object::ID',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'active_set',
 				function: 'remove',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function max_size(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::active_set::ActiveSet',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::active_set::ActiveSet`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'active_set',
 				function: 'max_size',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function size(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::active_set::ActiveSet',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::active_set::ActiveSet`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'active_set',
 				function: 'size',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function active_ids(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::active_set::ActiveSet',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::active_set::ActiveSet`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'active_set',
 				function: 'active_ids',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function active_ids_and_stake(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::active_set::ActiveSet',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::active_set::ActiveSet`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'active_set',
 				function: 'active_ids_and_stake',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function threshold_stake(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::active_set::ActiveSet',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::active_set::ActiveSet`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'active_set',
 				function: 'threshold_stake',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
 			});
 	}
 	function total_stake(options: { arguments: [RawTransactionArgument<string>] }) {
-		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::active_set::ActiveSet',
-		];
+		const argumentsTypes = [`${packageAddresses.walrus}::active_set::ActiveSet`];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'active_set',
 				function: 'total_stake',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),

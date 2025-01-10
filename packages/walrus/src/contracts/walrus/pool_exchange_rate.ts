@@ -12,12 +12,12 @@ export function PoolExchangeRate() {
 		pool_token_amount: bcs.u128(),
 	});
 }
-export function init(packageAddress: string) {
+export function init(packageAddresses: { walrus: string }) {
 	function empty(options: { arguments: [] }) {
 		const argumentsTypes: [] = [];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'pool_exchange_rate',
 				function: 'empty',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -28,12 +28,12 @@ export function init(packageAddress: string) {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<number | bigint>];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::pool_exchange_rate::PoolExchangeRate',
+			`${packageAddresses.walrus}::pool_exchange_rate::PoolExchangeRate`,
 			'u64',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'pool_exchange_rate',
 				function: 'get_wal_amount',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -43,12 +43,12 @@ export function init(packageAddress: string) {
 		arguments: [RawTransactionArgument<string>, RawTransactionArgument<number | bigint>];
 	}) {
 		const argumentsTypes = [
-			'0000000000000000000000000000000000000000000000000000000000000000::pool_exchange_rate::PoolExchangeRate',
+			`${packageAddresses.walrus}::pool_exchange_rate::PoolExchangeRate`,
 			'u64',
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'pool_exchange_rate',
 				function: 'get_token_amount',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),

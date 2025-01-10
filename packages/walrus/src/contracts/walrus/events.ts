@@ -69,7 +69,7 @@ export function ShardRecoveryStart() {
 		shards: bcs.vector(bcs.u16()),
 	});
 }
-export function init(packageAddress: string) {
+export function init(packageAddresses: { walrus: string }) {
 	function emit_blob_registered(options: {
 		arguments: [
 			RawTransactionArgument<number>,
@@ -92,7 +92,7 @@ export function init(packageAddress: string) {
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'events',
 				function: 'emit_blob_registered',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -118,7 +118,7 @@ export function init(packageAddress: string) {
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'events',
 				function: 'emit_blob_certified',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -130,7 +130,7 @@ export function init(packageAddress: string) {
 		const argumentsTypes = ['u32', 'u256'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'events',
 				function: 'emit_invalid_blob_id',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -154,7 +154,7 @@ export function init(packageAddress: string) {
 		];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'events',
 				function: 'emit_blob_deleted',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -164,7 +164,7 @@ export function init(packageAddress: string) {
 		const argumentsTypes = ['u32'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'events',
 				function: 'emit_epoch_change_start',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -174,7 +174,7 @@ export function init(packageAddress: string) {
 		const argumentsTypes = ['u32'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'events',
 				function: 'emit_epoch_change_done',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -186,7 +186,7 @@ export function init(packageAddress: string) {
 		const argumentsTypes = ['u32', 'vector<u16>'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'events',
 				function: 'emit_shards_received',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -198,7 +198,7 @@ export function init(packageAddress: string) {
 		const argumentsTypes = ['u32'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'events',
 				function: 'emit_epoch_parameters_selected',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
@@ -210,7 +210,7 @@ export function init(packageAddress: string) {
 		const argumentsTypes = ['u32', 'vector<u16>'];
 		return (tx: Transaction) =>
 			tx.moveCall({
-				package: packageAddress,
+				package: packageAddresses.walrus,
 				module: 'events',
 				function: 'emit_shard_recovery_start',
 				arguments: normalizeMoveArguments(options.arguments, argumentsTypes),
