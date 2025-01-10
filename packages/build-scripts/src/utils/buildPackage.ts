@@ -171,7 +171,7 @@ async function buildImportDirectories({ exports, sideEffects }: PackageJSON) {
 
 async function createEmptyDir(path: string) {
 	if (existsSync(path)) {
-		await fs.rm(path, { recursive: true, force: true });
+		await fs.rm(path, { recursive: true, force: true, maxRetries: 5 });
 	}
 
 	await fs.mkdir(path, { recursive: true });
