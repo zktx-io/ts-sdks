@@ -67,11 +67,10 @@ export async function setupSuiClient() {
 		logger: (msg) => console.warn('Retrying requesting from faucet: ' + msg),
 	});
 
-	const configPath = path.join(
-		'/test-data',
-		`${Math.random().toString(36).substring(2, 15)}-client.yaml`,
-	);
-	await execSuiTools(['client', '--yes', '--client.config', configPath]);
+	const configDir = path.join('/test-data', `${Math.random().toString(36).substring(2, 15)}`);
+	await execSuiTools(['mkdir', '-p', configDir]);
+	const configPath = path.join(configDir, 'client.yaml');
+	await execSuiTools(['sui', 'client', '--yes', '--client.config', configPath]);
 	return new TestToolbox(keypair, client, configPath);
 }
 
@@ -82,6 +81,7 @@ export async function publishPackage(packageName: string, toolbox?: TestToolbox)
 	}
 
 	const result = await execSuiTools([
+		'sui',
 		'move',
 		'--client.config',
 		toolbox.configPath,
@@ -194,7 +194,7 @@ export async function execSuiTools(
 	const SUI_TOOLS_CONTAINER_ID = inject('suiToolsContainerId');
 	const container = client.container.getById(SUI_TOOLS_CONTAINER_ID);
 
-	const result = await client.container.exec(container, ['sui', ...command], options);
+	const result = await client.container.exec(container, command, options);
 
 	if (result.stderr) {
 		console.log(result.stderr);

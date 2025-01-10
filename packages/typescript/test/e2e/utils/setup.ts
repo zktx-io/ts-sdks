@@ -118,10 +118,9 @@ export async function setup(options: { graphQLURL?: string; rpcURL?: string } = 
 	const keypair = Ed25519Keypair.generate();
 	const address = keypair.getPublicKey().toSuiAddress();
 
-	const configPath = path.join(
-		'/test-data',
-		`${Math.random().toString(36).substring(2, 15)}-client.yaml`,
-	);
+	const configDir = path.join('/test-data', `${Math.random().toString(36).substring(2, 15)}`);
+	await execSuiTools(['mkdir', '-p', configDir]);
+	const configPath = path.join(configDir, 'client.yaml');
 	return setupWithFundedAddress(keypair, address, configPath, options);
 }
 
@@ -159,7 +158,7 @@ export async function setupWithFundedAddress(
 		},
 	);
 
-	await execSuiTools(['client', '--yes', '--client.config', configPath]);
+	await execSuiTools(['sui', 'client', '--yes', '--client.config', configPath]);
 	return new TestToolbox(keypair, rpcURL, configPath);
 }
 
@@ -170,6 +169,7 @@ export async function publishPackage(packageName: string, toolbox?: TestToolbox)
 	}
 
 	const result = await execSuiTools([
+		'sui',
 		'move',
 		'--client.config',
 		toolbox.configPath,
@@ -235,6 +235,7 @@ export async function upgradePackage(
 		toolbox = await setup();
 	}
 	const { stdout } = await execSuiTools([
+		'sui',
 		'move',
 		'--client.config',
 		toolbox.configPath,
@@ -362,7 +363,7 @@ export async function execSuiTools(
 ) {
 	const container = client.container.getById(SUI_TOOLS_CONTAINER_ID);
 
-	const result = await client.container.exec(container, ['sui', ...command], options);
+	const result = await client.container.exec(container, command, options);
 
 	if (result.stderr) {
 		console.log(result.stderr);
