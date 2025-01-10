@@ -10,7 +10,7 @@ import { describe, expect, it } from 'vitest';
 import { bcs } from '../../../src/bcs';
 import { messageWithIntent } from '../../../src/cryptography';
 import { PasskeyKeypair } from '../../../src/keypairs/passkey';
-import { PasskeyProvider } from '../../../src/keypairs/passkey/keypair';
+import { findUniquePublicKey, PasskeyProvider } from '../../../src/keypairs/passkey/keypair';
 import {
 	parseSerializedPasskeySignature,
 	PasskeyPublicKey,
@@ -18,10 +18,10 @@ import {
 } from '../../../src/keypairs/passkey/publickey';
 import { fromBase64 } from '../../../src/utils';
 
-function compressedPubKeyToDerSPKI(compressedPubKey: Uint8Array): ArrayBuffer {
+function compressedPubKeyToDerSPKI(compressedPubKey: Uint8Array): Uint8Array {
 	// Combine header with the uncompressed public key coordinates.
 	const uncompressedPubKey = secp256r1.ProjectivePoint.fromHex(compressedPubKey).toRawBytes(false);
-	return new Uint8Array([...SECP256R1_SPKI_HEADER, ...uncompressedPubKey]).buffer;
+	return new Uint8Array([...SECP256R1_SPKI_HEADER, ...uncompressedPubKey]);
 }
 
 class MockPasskeySigner implements PasskeyProvider {
@@ -59,7 +59,7 @@ class MockPasskeySigner implements PasskeyProvider {
 	async create(): Promise<RegistrationCredential> {
 		const pk = this.pk;
 		const credentialResponse: AuthenticatorAttestationResponse = {
-			attestationObject: new ArrayBuffer(0),
+			attestationObject: new Uint8Array(),
 			clientDataJSON: new TextEncoder().encode(
 				JSON.stringify({
 					type: 'webauthn.create',
@@ -67,7 +67,7 @@ class MockPasskeySigner implements PasskeyProvider {
 					origin: 'https://www.sui.io',
 					crossOrigin: false,
 				}),
-			).buffer as ArrayBuffer,
+			),
 			getPublicKey: () =>
 				pk
 					? compressedPubKeyToDerSPKI(pk)
@@ -77,20 +77,19 @@ class MockPasskeySigner implements PasskeyProvider {
 							64, 72, 105, 218, 94, 85, 28, 244, 5, 19, 172, 167, 65, 137, 42, 193, 31, 97, 55, 49,
 							168, 234, 185, 163, 251, 162, 235, 213, 185, 116, 178, 194, 7, 128, 238, 255, 59, 121,
 							255, 175, 188, 137, 89, 147, 168, 103, 128, 97, 52,
-						]).buffer,
+						]),
 			getPublicKeyAlgorithm: () => -7,
 			getTransports: () => ['usb', 'ble', 'nfc'],
-			getAuthenticatorData: () => this.authenticatorData.buffer as ArrayBuffer,
+			getAuthenticatorData: () => this.authenticatorData,
 		};
 
 		const credential: PublicKeyCredential = {
 			id: 'mock-credential-id',
-			rawId: new Uint8Array([1, 2, 3]).buffer as ArrayBuffer,
+			rawId: new Uint8Array([1, 2, 3]),
 			response: credentialResponse,
 			type: 'public-key',
 			authenticatorAttachment: 'cross-platform',
 			getClientExtensionResults: () => ({}),
-			toJSON: () => ({}),
 		};
 
 		return credential as RegistrationCredential;
@@ -129,21 +128,20 @@ class MockPasskeySigner implements PasskeyProvider {
 
 		const authResponse: AuthenticatorAssertionResponse = {
 			authenticatorData: this.changeAuthenticatorData
-				? (new Uint8Array([1]).buffer as ArrayBuffer) // Change authenticator data
-				: (this.authenticatorData.buffer as ArrayBuffer),
-			clientDataJSON: new TextEncoder().encode(clientDataJSON).buffer as ArrayBuffer,
-			signature: signature.toDERRawBytes().buffer as ArrayBuffer,
+				? new Uint8Array([1]) // Change authenticator data
+				: this.authenticatorData,
+			clientDataJSON: new TextEncoder().encode(clientDataJSON),
+			signature: signature.toDERRawBytes(),
 			userHandle: null,
 		};
 
 		const credential: PublicKeyCredential = {
 			id: 'mock-credential-id',
-			rawId: new Uint8Array([1, 2, 3]).buffer as ArrayBuffer,
+			rawId: new Uint8Array([1, 2, 3]),
 			type: 'public-key',
 			response: authResponse,
 			authenticatorAttachment: 'cross-platform',
 			getClientExtensionResults: () => ({}),
-			toJSON: () => ({}),
 		};
 
 		return credential as AuthenticationCredential;
@@ -184,7 +182,7 @@ describe('passkey signer E2E testing', () => {
 		// Parsed signature as expected.
 		const parsed = parseSerializedPasskeySignature(signature);
 		expect(parsed.signatureScheme).toEqual('Passkey');
-		expect(parsed.publicKey!).toEqual(pk);
+		expect(parsed.publicKey).toEqual(pk);
 		expect(new Uint8Array(parsed.authenticatorData!)).toEqual(authenticatorData);
 
 		const messageBytes = bcs.vector(bcs.u8()).serialize(testMessage).toBytes();
@@ -237,7 +235,7 @@ describe('passkey signer E2E testing', () => {
 		// Parsed signature as expected.
 		const parsed = parseSerializedPasskeySignature(signature);
 		expect(parsed.signatureScheme).toEqual('Passkey');
-		expect(parsed.publicKey!).toEqual(pk);
+		expect(parsed.publicKey).toEqual(pk);
 		expect(new Uint8Array(parsed.authenticatorData!)).toEqual(authenticatorData);
 		expect(parsed.clientDataJson).toEqual(clientDataJSONString);
 
@@ -310,7 +308,7 @@ describe('passkey signer E2E testing', () => {
 		);
 		const parsed = parseSerializedPasskeySignature(sig);
 		expect(parsed.signatureScheme).toEqual('Passkey');
-		const pubkey = new PasskeyPublicKey(parsed.publicKey!);
+		const pubkey = new PasskeyPublicKey(parsed.publicKey);
 		const isValid = await pubkey.verifyTransaction(txBytes, sig);
 		expect(isValid).toBe(true);
 	});
@@ -325,8 +323,34 @@ describe('passkey signer E2E testing', () => {
 		);
 		const parsed = parseSerializedPasskeySignature(sig);
 		expect(parsed.signatureScheme).toEqual('Passkey');
-		const pubkey = new PasskeyPublicKey(parsed.publicKey!);
+		const pubkey = new PasskeyPublicKey(parsed.publicKey);
 		const isValid = await pubkey.verifyTransaction(txBytes, sig);
 		expect(isValid).toBe(true);
+	});
+
+	it('should sign and recover to an unique public key', async () => {
+		const sk = secp256r1.utils.randomPrivateKey();
+		const pk = secp256r1.getPublicKey(sk);
+		const authenticatorData = new Uint8Array([]);
+		const mockProvider = new MockPasskeySigner({
+			sk: sk,
+			pk: pk,
+			authenticatorData: authenticatorData,
+		});
+
+		const signer = await PasskeyKeypair.getPasskeyInstance(mockProvider);
+		const address = signer.getPublicKey().toSuiAddress();
+
+		const testMessage = new TextEncoder().encode('Hello world!');
+		const possiblePks = await PasskeyKeypair.signAndRecover(mockProvider, testMessage);
+
+		const testMessage2 = new TextEncoder().encode('Hello world 2!');
+		const possiblePks2 = await PasskeyKeypair.signAndRecover(mockProvider, testMessage2);
+
+		const uniquePk = findUniquePublicKey(possiblePks, possiblePks2);
+		const signer2 = new PasskeyKeypair(uniquePk.toRawBytes(), mockProvider);
+
+		// the address from recovered pk is the same as the one constructed from the same mock provider
+		expect(signer2.getPublicKey().toSuiAddress()).toEqual(address);
 	});
 });
