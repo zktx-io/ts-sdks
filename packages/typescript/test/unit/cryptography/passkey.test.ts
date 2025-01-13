@@ -59,33 +59,35 @@ class MockPasskeySigner implements PasskeyProvider {
 	async create(): Promise<RegistrationCredential> {
 		const pk = this.pk;
 		const credentialResponse: AuthenticatorAttestationResponse = {
-			attestationObject: new Uint8Array(),
-			clientDataJSON: new TextEncoder().encode(
-				JSON.stringify({
-					type: 'webauthn.create',
-					challenge: '',
-					origin: 'https://www.sui.io',
-					crossOrigin: false,
-				}),
-			),
+			attestationObject: new Uint8Array().slice().buffer,
+			clientDataJSON: new TextEncoder()
+				.encode(
+					JSON.stringify({
+						type: 'webauthn.create',
+						challenge: '',
+						origin: 'https://www.sui.io',
+						crossOrigin: false,
+					}),
+				)
+				.slice().buffer,
 			getPublicKey: () =>
 				pk
-					? compressedPubKeyToDerSPKI(pk)
+					? compressedPubKeyToDerSPKI(pk).slice().buffer
 					: new Uint8Array([
 							48, 89, 48, 19, 6, 7, 42, 134, 72, 206, 61, 2, 1, 6, 8, 42, 134, 72, 206, 61, 3, 1, 7,
 							3, 66, 0, 4, 232, 238, 71, 180, 129, 19, 164, 11, 106, 184, 25, 185, 136, 226, 178,
 							64, 72, 105, 218, 94, 85, 28, 244, 5, 19, 172, 167, 65, 137, 42, 193, 31, 97, 55, 49,
 							168, 234, 185, 163, 251, 162, 235, 213, 185, 116, 178, 194, 7, 128, 238, 255, 59, 121,
 							255, 175, 188, 137, 89, 147, 168, 103, 128, 97, 52,
-						]),
+						]).slice().buffer,
 			getPublicKeyAlgorithm: () => -7,
 			getTransports: () => ['usb', 'ble', 'nfc'],
-			getAuthenticatorData: () => this.authenticatorData,
+			getAuthenticatorData: () => this.authenticatorData.slice().buffer,
 		};
 
-		const credential: PublicKeyCredential = {
+		const credential = {
 			id: 'mock-credential-id',
-			rawId: new Uint8Array([1, 2, 3]),
+			rawId: new Uint8Array([1, 2, 3]).buffer,
 			response: credentialResponse,
 			type: 'public-key',
 			authenticatorAttachment: 'cross-platform',
@@ -128,16 +130,16 @@ class MockPasskeySigner implements PasskeyProvider {
 
 		const authResponse: AuthenticatorAssertionResponse = {
 			authenticatorData: this.changeAuthenticatorData
-				? new Uint8Array([1]) // Change authenticator data
-				: this.authenticatorData,
-			clientDataJSON: new TextEncoder().encode(clientDataJSON),
-			signature: signature.toDERRawBytes(),
+				? new Uint8Array([1]).buffer // Change authenticator data
+				: this.authenticatorData.slice().buffer,
+			clientDataJSON: new TextEncoder().encode(clientDataJSON).slice().buffer,
+			signature: signature.toDERRawBytes().slice().buffer,
 			userHandle: null,
 		};
 
-		const credential: PublicKeyCredential = {
+		const credential = {
 			id: 'mock-credential-id',
-			rawId: new Uint8Array([1, 2, 3]),
+			rawId: new Uint8Array([1, 2, 3]).buffer,
 			type: 'public-key',
 			response: authResponse,
 			authenticatorAttachment: 'cross-platform',
