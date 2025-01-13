@@ -10,7 +10,7 @@ import { describe, expect, it } from 'vitest';
 import { bcs } from '../../../src/bcs';
 import { messageWithIntent } from '../../../src/cryptography';
 import { PasskeyKeypair } from '../../../src/keypairs/passkey';
-import { findUniquePublicKey, PasskeyProvider } from '../../../src/keypairs/passkey/keypair';
+import { findCommonPublicKey, PasskeyProvider } from '../../../src/keypairs/passkey/keypair';
 import {
 	parseSerializedPasskeySignature,
 	PasskeyPublicKey,
@@ -349,8 +349,8 @@ describe('passkey signer E2E testing', () => {
 		const testMessage2 = new TextEncoder().encode('Hello world 2!');
 		const possiblePks2 = await PasskeyKeypair.signAndRecover(mockProvider, testMessage2);
 
-		const uniquePk = findUniquePublicKey(possiblePks, possiblePks2);
-		const signer2 = new PasskeyKeypair(uniquePk.toRawBytes(), mockProvider);
+		const commonPk = findCommonPublicKey(possiblePks, possiblePks2);
+		const signer2 = new PasskeyKeypair(commonPk.toRawBytes(), mockProvider);
 
 		// the address from recovered pk is the same as the one constructed from the same mock provider
 		expect(signer2.getPublicKey().toSuiAddress()).toEqual(address);

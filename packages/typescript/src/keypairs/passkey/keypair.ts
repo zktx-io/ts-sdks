@@ -227,7 +227,7 @@ export class PasskeyKeypair extends Signer {
 	 * This is useful if the user previously created passkey wallet with the origin, but the wallet session
 	 * does not have the public key / address. By calling this method twice with two different messages, the
 	 * wallet can compare the returned public keys and uniquely identify the previously created passkey wallet
-	 * using `findUniquePublicKey`.
+	 * using `findCommonPublicKey`.
 	 *
 	 * Alternatively, one call can be made and all possible public keys should be checked onchain to see if
 	 * there is any assets.
@@ -244,8 +244,8 @@ export class PasskeyKeypair extends Signer {
 	 * const possiblePks = await PasskeyKeypair.signAndRecover(provider, testMessage);
 	 * const testMessage2 = new TextEncoder().encode('Hello world 2!');
 	 * const possiblePks2 = await PasskeyKeypair.signAndRecover(provider, testMessage2);
-	 * const uniquePk = findUniquePublicKey(possiblePks, possiblePks2);
-	 * const signer = new PasskeyKeypair(provider, uniquePk.toRawBytes());
+	 * const commonPk = findCommonPublicKey(possiblePks, possiblePks2);
+	 * const signer = new PasskeyKeypair(provider, commonPk.toRawBytes());
 	 * ```
 	 *
 	 * @param provider - the passkey provider.
@@ -283,7 +283,7 @@ export class PasskeyKeypair extends Signer {
  * @param arr2 - The second pubkeys array.
  * @returns The only common pubkey in both arrays.
  */
-export function findUniquePublicKey(arr1: PublicKey[], arr2: PublicKey[]): PublicKey {
+export function findCommonPublicKey(arr1: PublicKey[], arr2: PublicKey[]): PublicKey {
 	const matchingPubkeys: PublicKey[] = [];
 	for (const pubkey1 of arr1) {
 		for (const pubkey2 of arr2) {
