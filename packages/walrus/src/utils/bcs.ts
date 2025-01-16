@@ -1,7 +1,7 @@
 // Copyright (c) Mysten Labs, Inc.
 // SPDX-License-Identifier: Apache-2.0
 
-import { bcs } from '@mysten/bcs';
+import { bcs, fromBase64, toBase64 } from '@mysten/bcs';
 
 const MerkleNode = bcs.enum('MerkleNode', {
 	Empty: null,
@@ -27,8 +27,22 @@ export const BlobMetadata = bcs.enum('BlobMetadata', {
 	V1: BlobMetadataV1,
 });
 
+export const BlobId = bcs.bytes(32).transform({
+	input: (blobId: string | Iterable<number>) =>
+		typeof blobId === 'string' ? blobIdToBytes(blobId) : blobId,
+	output: (bytes: Uint8Array) => blobIdFromBytes(bytes),
+});
+
+export function blobIdFromBytes(blobId: Uint8Array): string {
+	return toBase64(blobId).replace(/=*$/, '').replaceAll('+', '-').replaceAll('/', '_');
+}
+
+export function blobIdToBytes(blobId: string): Uint8Array {
+	return fromBase64(blobId.replaceAll('-', '+').replaceAll('_', '/'));
+}
+
 export const BlobMetadataWithId = bcs.struct('BlobMetadataWithId', {
-	blob_id: bcs.bytes(32),
+	blob_id: BlobId,
 	metadata: BlobMetadata,
 });
 
