@@ -1,5 +1,11 @@
 # @mysten/sui.js
 
+## 1.20.0
+
+### Minor Changes
+
+- 827a200: add recover passkey option to sdk
+
 ## 1.19.0
 
 ### Minor Changes

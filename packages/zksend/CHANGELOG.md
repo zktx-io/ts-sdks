@@ -1,5 +1,13 @@
 # @mysten/zksend
 
+## 0.12.13
+
+### Patch Changes
+
+- Updated dependencies [827a200]
+  - @mysten/sui@1.20.0
+  - @mysten/wallet-standard@0.13.23
+
 ## 0.12.12
 
 ### Patch Changes
