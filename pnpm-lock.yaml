@@ -893,6 +893,9 @@ importers:
       '@mysten/walrus-wasm':
         specifier: workspace:*
         version: link:../walrus-wasm
+      dataloader:
+        specifier: ^2.2.3
+        version: 2.2.3
     devDependencies:
       '@hey-api/openapi-ts':
         specifier: ^0.61.2

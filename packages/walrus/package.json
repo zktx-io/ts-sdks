@@ -50,6 +50,7 @@
 		"@hey-api/client-fetch": "^0.6.0",
 		"@mysten/bcs": "workspace:*",
 		"@mysten/sui": "workspace:*",
-		"@mysten/walrus-wasm": "workspace:*"
+		"@mysten/walrus-wasm": "workspace:*",
+		"dataloader": "^2.2.3"
 	}
 }
