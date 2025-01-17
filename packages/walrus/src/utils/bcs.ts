@@ -60,3 +60,8 @@ export const Sliver = bcs.enum('Sliver', {
 	Primary: SliverData,
 	Secondary: SliverData,
 });
+
+export const SliverPair = bcs.struct('SliverPair', {
+	primary: SliverData,
+	secondary: SliverData,
+});
