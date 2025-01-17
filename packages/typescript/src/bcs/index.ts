@@ -85,6 +85,10 @@ const suiBcs = {
 	TransactionEffects,
 	PasskeyAuthenticator,
 };
-export { pureBcsSchemaFromName, type ShapeFromPureTypeName, type PureTypeName } from './pure.js';
+export {
+	pureBcsSchemaFromTypeName,
+	type ShapeFromPureTypeName,
+	type PureTypeName,
+} from './pure.js';
 
 export { suiBcs as bcs };

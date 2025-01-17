@@ -3,7 +3,9 @@
 
 import { SuiClient } from '@mysten/sui/client';
 
+import { TESTNET_WALRUS_PACKAGE_CONFIG } from './constants.js';
 import { StakingInnerV1 } from './contracts/walrus/staking_inner.js';
+import { Staking } from './contracts/walrus/staking.js';
 import { SystemStateInnerV1 } from './contracts/walrus/system_state_inner.js';
 import { System } from './contracts/walrus/system.js';
 import { SuiObjectDataLoader } from './utils/object-loader.js';
@@ -25,9 +27,17 @@ type SuiClientOrRpcUrl =
 			suiClient?: never;
 	  };
 
-export type WalrusClientConfig = {
-	packageConfig: WalrusPackageConfig;
-} & SuiClientOrRpcUrl;
+type WalrusNetworkOrPackageConfig =
+	| {
+			network: 'testnet';
+			packageConfig?: WalrusPackageConfig;
+	  }
+	| {
+			network?: never;
+			packageConfig: WalrusPackageConfig;
+	  };
+
+export type WalrusClientConfig = WalrusNetworkOrPackageConfig & SuiClientOrRpcUrl;
 
 export class WalrusClient {
 	#packageConfig: WalrusPackageConfig;
@@ -35,7 +45,19 @@ export class WalrusClient {
 	#objectLoader: SuiObjectDataLoader;
 
 	constructor(config: WalrusClientConfig) {
-		this.#packageConfig = config.packageConfig;
+		if (config.network && !config.packageConfig) {
+			const network = config.network;
+			switch (network) {
+				case 'testnet':
+					this.#packageConfig = TESTNET_WALRUS_PACKAGE_CONFIG;
+					break;
+				default:
+					throw new Error(`Unsupported network: ${network}`);
+			}
+		} else {
+			this.#packageConfig = config.packageConfig!;
+		}
+
 		this.#suiClient =
 			config.suiClient ??
 			new SuiClient({
@@ -48,10 +70,14 @@ export class WalrusClient {
 		return this.#objectLoader.load(this.#packageConfig.systemObjectId, System());
 	}
 
+	#stakingObject() {
+		return this.#objectLoader.load(this.#packageConfig.stakingPoolId, Staking());
+	}
+
 	async systemState() {
 		const systemState = await this.#objectLoader.loadFieldObject(
 			this.#packageConfig.systemObjectId,
-			{ type: 'u64', value: (await this.#systemObject()).version },
+			{ type: 'u64', value: (await this.#stakingObject()).version },
 			SystemStateInnerV1(),
 		);
 

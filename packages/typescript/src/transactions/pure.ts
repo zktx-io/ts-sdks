@@ -5,7 +5,7 @@ import { isSerializedBcs } from '@mysten/bcs';
 import type { SerializedBcs } from '@mysten/bcs';
 
 import { bcs } from '../bcs/index.js';
-import { pureBcsSchemaFromName } from '../bcs/pure.js';
+import { pureBcsSchemaFromTypeName } from '../bcs/pure.js';
 import type { PureTypeName, ShapeFromPureTypeName, ValidPureTypeName } from '../bcs/pure.js';
 
 export function createPure<T>(makePure: (value: SerializedBcs<any, any> | Uint8Array) => T) {
@@ -27,7 +27,7 @@ export function createPure<T>(makePure: (value: SerializedBcs<any, any> | Uint8A
 		value?: unknown,
 	): T {
 		if (typeof typeOrSerializedValue === 'string') {
-			return makePure(pureBcsSchemaFromName(typeOrSerializedValue).serialize(value as never));
+			return makePure(pureBcsSchemaFromTypeName(typeOrSerializedValue).serialize(value as never));
 		}
 
 		if (typeOrSerializedValue instanceof Uint8Array || isSerializedBcs(typeOrSerializedValue)) {
@@ -52,14 +52,14 @@ export function createPure<T>(makePure: (value: SerializedBcs<any, any> | Uint8A
 		value: Iterable<ShapeFromPureTypeName<Type>> & { length: number },
 	) => {
 		return makePure(
-			bcs.vector(pureBcsSchemaFromName(type as PureTypeName)).serialize(value as never),
+			bcs.vector(pureBcsSchemaFromTypeName(type as PureTypeName)).serialize(value as never),
 		);
 	};
 	pure.option = <Type extends PureTypeName>(
 		type: T extends PureTypeName ? ValidPureTypeName<Type> : Type,
 		value: ShapeFromPureTypeName<Type> | null | undefined,
 	) => {
-		return makePure(bcs.option(pureBcsSchemaFromName(type)).serialize(value as never));
+		return makePure(bcs.option(pureBcsSchemaFromTypeName(type)).serialize(value as never));
 	};
 
 	return pure;

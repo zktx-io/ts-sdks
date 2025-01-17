@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import type { BcsType } from '@mysten/bcs';
-import { pureBcsSchemaFromName } from '@mysten/sui/bcs';
+import { pureBcsSchemaFromTypeName } from '@mysten/sui/bcs';
 import type { PureTypeName, ShapeFromPureTypeName } from '@mysten/sui/bcs';
 import type { SuiClient, SuiObjectData, SuiObjectResponse } from '@mysten/sui/client';
 import DataLoader from 'dataloader';
@@ -93,7 +93,7 @@ export class SuiObjectDataLoader extends DataLoader<string, SuiObjectData> {
 			value: ShapeFromPureTypeName<T>;
 		},
 	) {
-		const encodedName = pureBcsSchemaFromName<T>(name.type as never)
+		const encodedName = pureBcsSchemaFromTypeName<T>(name.type as never)
 			.serialize(name.value)
 			.toBase64();
 

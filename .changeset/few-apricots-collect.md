@@ -2,4 +2,4 @@
 '@mysten/sui': minor
 ---
 
-expose `pureBcsSchemaFromName` utility
+expose `pureBcsSchemaFromTypeName` utility

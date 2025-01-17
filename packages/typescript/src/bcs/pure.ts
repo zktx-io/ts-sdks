@@ -52,7 +52,7 @@ type PureTypeValidationError<T extends string> = T & {
 	error: `Invalid Pure type name: ${T}`;
 };
 
-export function pureBcsSchemaFromName<T extends PureTypeName>(
+export function pureBcsSchemaFromTypeName<T extends PureTypeName>(
 	name: T extends PureTypeName ? ValidPureTypeName<T> : T,
 ): BcsType<ShapeFromPureTypeName<T>> {
 	switch (name) {
@@ -81,9 +81,9 @@ export function pureBcsSchemaFromName<T extends PureTypeName>(
 	if (generic) {
 		const [kind, inner] = generic.slice(1);
 		if (kind === 'vector') {
-			return bcs.vector(pureBcsSchemaFromName(inner as PureTypeName)) as never;
+			return bcs.vector(pureBcsSchemaFromTypeName(inner as PureTypeName)) as never;
 		} else {
-			return bcs.option(pureBcsSchemaFromName(inner as PureTypeName)) as never;
+			return bcs.option(pureBcsSchemaFromTypeName(inner as PureTypeName)) as never;
 		}
 	}
 
